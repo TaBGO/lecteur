@@ -11,7 +11,7 @@ Vous pouvez consulter la documentation pour construire vos blocs au format **[do
 Des exemples d'algorithmes sont disponibles *ici* (à venir)
 
 Le code disponible ici a principalement été développé par des étudiants de L3 informatique de l'université Toulouse 3 dans le cadre de leur TER 2020/2021 et fait suite à 3 "PoC" précédents.
-./documentation/TaBGO_blocs_Scratch.docx
+
 ## Technologies utilisées
 Le logiciel utilise [processing.org](https://www.processing.org) et les librairies *[OpenCV](./tabgo/code/opencv_processing4.52.jar)* recompilé avec la version OpenCV 4.52, *[Video](https://github.com/processing/processing-video)* (pour la reconnaissance optique) et *[gson](https://github.com/google/gson)* (pour la création des fichiers **sb3**).
 Enfin, la librairie *[TTSLib](https://www.local-guru.net/blog/pages/ttslib)* pour Processing est utilisée pour un feedback sonore.
@@ -33,3 +33,8 @@ Le fichier **.sb3** obtenu se trouve dans le dossier "**data/sb3/Programme_scrat
 
 ## Financement
 Ce projet a été partiellement financé via un appel à projets de l'[UNADEV](https://www.unadev.com/nos-missions/appel-a-projets) - Financement **2019.49** 
+
+# Publications en lien avec le projet
+* Marco J.B., Baptiste-Jessel N., Truillet Ph., *[TaBGO : Programmation par blocs tangibles](https://hal.archives-ouvertes.fr/hal-02181953)* In: 30e Conference francophone sur l'Interaction Homme-Machine (IHM 2018), 23 October 2018 - 26 October 2018 (Brest, France)
+* Andriamahery-Ranjalahy K., Berquez L., Jessel N., Truillet Ph., *[TaBGO: towards accessible computer science in secondary school](https://hal.archives-ouvertes.fr/hal-03168307v1)*, In : 23rd International Conference on Human-Computer Interaction (HCI International 2021), Jul 2021, virtual place, United States.
+* Andriamahery-Ranjalahy K., Truillet Ph.,  Permettre l’autonomie dans l’activité de programmation par blocs pour des enfants non-voyants, In : 12e Conférence Handicap 2022, 8-10 Juin 2022 (Paris, France)
