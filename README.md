@@ -11,7 +11,8 @@ Vous pouvez consulter la documentation pour construire vos blocs au format **[do
 Des exemples d'algorithmes sont disponibles *ici* (*à venir*)
 
 Le code disponible **[là](./tabgo)** a principalement été développé par des étudiants de L3 informatique de l'université Toulouse 3 dans le cadre de leur TER 2020/2021 et fait suite à 3 "PoC" précédents.
-D'autres voies sont explorées comme 
+
+D'autres voies sont actuellement explorées pour permettre une exécution du code complètement non-visuelle.
 
 ## Technologies utilisées
 Le logiciel utilise [processing.org](https://www.processing.org) et les librairies *[OpenCV](./tabgo/code/opencv_processing4.52.jar)* recompilé avec la version OpenCV 4.52, *[Video](https://github.com/processing/processing-video)* (pour la reconnaissance optique) et *[gson](https://github.com/google/gson)* (pour la création des fichiers **sb3**).
