@@ -1,4 +1,4 @@
-# TaBGO <img src="https://github.com/truillet/tabgo_be/blob/main/documentation/images/tabgo.png" width=150 alt="TaBGO">
+# TaBGO <img src="./documentation/images/tabgo.png" width=150 alt="TaBGO">
 
 ## Informations générales
 Le projet TaBGO a pour objectif de permettre à des personnes non-voyantes d'utiliser le langage de programmation [Scratch](https://scratch.mit.edu) par utilisation de blocs tangibles.
