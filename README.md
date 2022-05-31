@@ -18,7 +18,7 @@ Enfin, la librairie *[TTSLib](https://www.local-guru.net/blog/pages/ttslib)* pou
 
 ## Installation (à n'effectuer qu'une fois)
 * Téléchargement du logiciel [Processing.org](https://processing.org/download)
-* Importation des librairies *[Video](https://github.com/processing/processing-video)* et *[TTSLib](https://www.local-guru.net/blog/pages/ttslib)* : 
+* Importation des librairies *[Video](https://github.com/processing/processing-video)* et *[TTSLib](https://www.local-guru.net/blog/pages/ttslib)* []téléchargeable aussi [ici](https://github.com/TaBGO/lecteur/blob/main/librairies/ttslib.zip) : 
 
 `Sketch -> Importer une librairie... -> Ajouter une librairie...`
 * Les librairise [gson](https://github.com/google/gson). Normalement la librairie *[gson](https://github.com/google/gson)* et *[OpenCV](./tabgo/code/opencv_processing4.52.jar)* se trouvent dans le sous-dossier **code** et seront chargées automatiquement. Si cela ne fonctionne pas, glissez-déposez les fichiers *.jar* dans la fenêtre Processing lors de l'ouverture du programme.
