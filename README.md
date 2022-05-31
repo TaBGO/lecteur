@@ -4,7 +4,7 @@
 Le projet TaBGO a pour objectif de permettre à des personnes non-voyantes d'utiliser le langage de programmation [Scratch](https://scratch.mit.edu) par utilisation de blocs tangibles.
 Le logiciel TaBGO permet la reconnaissance des blocs tangibles grâce à des [TopCodes](https://github.com/truillet/TopCodes) ainsi que des cubarithmes et créer un fichier **sb3** exécutable par [Scratch](https://scratch.mit.edu).
 
-<img src="https://github.com/truillet/tabgo_be/blob/main/documentation/images/blocks.jpg" width=400 alt="différents prototypes">
+<img src="./documentation/images/blocks.jpg" width=400 alt="différents prototypes">
 
 Vous pouvez consulter la documentation pour construire vos blocs au format **[docx](./documentation/TaBGO_blocs_Scratch.docx)** ou **[pdf](./documentation/TaBGO_blocs_Scratch.pdf)**
 
