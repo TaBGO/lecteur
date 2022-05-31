@@ -8,7 +8,7 @@ Le logiciel TaBGO permet la reconnaissance des blocs tangibles grâce à des [To
 
 Vous pouvez consulter la documentation pour construire vos blocs au format **[docx](./documentation/TaBGO_blocs_Scratch.docx)** ou **[pdf](./documentation/TaBGO_blocs_Scratch.pdf)**
 
-Des exemples d'algorithmes sont disponibles *ici* (à venir)
+Des exemples d'algorithmes sont disponibles *ici* (*à venir*)
 
 Le code disponible ici a principalement été développé par des étudiants de L3 informatique de l'université Toulouse 3 dans le cadre de leur TER 2020/2021 et fait suite à 3 "PoC" précédents.
 
@@ -37,4 +37,4 @@ Ce projet a été partiellement financé via un appel à projets de l'[UNADEV](h
 # Publications en lien avec le projet
 * Marco J.B., Baptiste-Jessel N., Truillet Ph., *[TaBGO : Programmation par blocs tangibles](https://hal.archives-ouvertes.fr/hal-02181953)* In: 30e Conference francophone sur l'Interaction Homme-Machine (IHM 2018), 23 October 2018 - 26 October 2018 (Brest, France)
 * Andriamahery-Ranjalahy K., Berquez L., Jessel N., Truillet Ph., *[TaBGO: towards accessible computer science in secondary school](https://hal.archives-ouvertes.fr/hal-03168307v1)*, In : 23rd International Conference on Human-Computer Interaction (HCI International 2021), Jul 2021, virtual place, United States.
-* Andriamahery-Ranjalahy K., Truillet Ph.,  Permettre l’autonomie dans l’activité de programmation par blocs pour des enfants non-voyants, In : 12e Conférence Handicap 2022, 8-10 Juin 2022 (Paris, France)
+* Andriamahery-Ranjalahy K., Truillet Ph.,  *Permettre l’autonomie dans l’activité de programmation par blocs pour des enfants non-voyants*, In : 12e Conférence Handicap 2022, 8-10 Juin 2022 (Paris, France)
