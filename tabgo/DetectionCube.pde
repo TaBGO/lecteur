@@ -1,3 +1,4 @@
+import java.util.Collections;
 public class DetectionCube {
    /**
    * Classe DetectionCube modélisant la liste des points et des Cubes sur mon Image
@@ -18,11 +19,39 @@ public class DetectionCube {
     mesPoints = new ArrayList<Point>();
     monBraille = new Braille();
 
-    maCouleur = color(68, 101, 126);
+    maCouleur = color(68, 101, 126); /* color(7,74,172); pour les tests utilisant des cubarithmes */
     imageSource = src;
 
     recherche();
-    
+    trie();
+  }
+
+
+  /*
+  * Trie les cubarithmes de la liste mesCubes en fonction de leur coordonées en y, puis en x avec une certaine marge
+  * Au final : mesCubes(i).c.y < mesCubes(i+1).c.y 
+  * ou sinon : mesCubes(i).c.x < mesCubes(i+1).c.x
+  */
+  public void trie(){
+      Collections.sort(mesCubes, new Comparator<Cube>(){
+        @Override
+        public int compare(Cube cubeg, Cube cubed){
+          int marge = 10;
+          if (cubeg.c.y < cubed.c.y - marge){
+            return -1;
+          }
+          if (cubeg.c.y > cubed.c.y + marge){
+            return 1;
+          }
+          if (cubeg.c.x < cubed.c.x - marge){
+            return -1;
+          }
+          if (cubeg.c.x > cubed.c.x + marge){
+            return 1;
+          }
+          return 0;          
+        }
+      });    
   }
 
   public List<Cube> getListCubes(){

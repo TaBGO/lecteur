@@ -2,6 +2,7 @@ import java.util.LinkedHashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.*;
 
 /*
 * Cette classe comprend tout ce qui est nécessaire pour créer un block sur Scratch et être reconnu par celui-ci lors de la génération du JSON
@@ -26,17 +27,79 @@ public class Blocks {
   public Blocks(String op) {
     opcode = op;
   }
-  
+
+
   /*
   * Constructeur qui permet de créé un bloc à partir d'un autre. En d'autre terme, fait une copie du bloc passé en paramètre
   * @param b : bloc à copier
   */
   public Blocks(Blocks b) {
-    opcode = b.getOpcode();
-    fields = b.getFields();
-    for(Map.Entry<String, List<Object>> entry : b.getInputs().entrySet()) {
-      inputs.put(entry.getKey(), new ArrayList());
+      Blocks bint = b.copy();
+      opcode = bint.opcode;
+      next = bint.next;
+      parent = bint.parent;
+      inputs = bint.inputs;
+      fields = bint.fields;
+      shadow = bint.shadow;
+      topLevel = bint.topLevel;
+      x = bint.x;
+      y = bint.y;
+  }
+  
+  
+  /* 
+  * Méthode privée utilisée pour faire une copie profonde d'une liste d'objets, dans une autre. Elles représent généralement le field ou input du block
+  * @param List<Object> ldest liste où l'on veut copier la liste. Soit l'attribut input, soit l'attribut field du Block.
+  * @param List<Object> lsource liste que l'on veut copier
+  */
+  private void copieList(List<Object> ldest, List<Object> lsource){
+    /* Object o peut être soit un String, un Integer ou une autre List<Objects> */
+    for (Object o : lsource){
+      if (o instanceof String){
+        String s = (String) o;
+        ldest.add(s);
+      } else if (o instanceof Integer){
+        int val = (int) o;
+        ldest.add(val);
+      } else if (o instanceof List){
+        List<Object> l1 = (List<Object>)o;
+        List<Object> ldestint = new ArrayList<Object>();
+        copieList(ldestint, l1);
+        ldest.add(ldestint);
+      }
     }
+  }
+  
+  /**
+   * Renvoie la copie profonde de soi même
+   * @return copie profonde de soi même
+  */
+  public Blocks copy(){
+    Blocks b = new Blocks(this.opcode);
+    b.inputs = new LinkedHashMap<String, List<Object>>();
+    /* Parcours des inputs du bloc courant */
+    for (Map.Entry<String, List<Object>> bin : inputs.entrySet()){
+      /* Copie profonde de la liste obtenue */
+      List<Object> l = new ArrayList<Object>();
+      copieList(l, bin.getValue());
+      b.inputs.put(bin.getKey(),l);
+    }
+    
+    b.fields = new LinkedHashMap<String, List<Object>>();
+    /* Parcours des fields du bloc courant */
+    for (Map.Entry<String, List<Object>> bf : fields.entrySet()){
+      /* Copie profonde de la liste obtenue */
+      List<Object> l = new ArrayList<Object>();
+      copieList(l, bf.getValue());
+      b.fields.put(bf.getKey(),l);
+    }    
+    b.next = this.next;
+    b.parent = this.parent;
+    b.shadow = this.shadow;
+    b.topLevel = this.topLevel;
+    b.x = this.x;
+    b.y = this.y;
+    return b;
   }
   
   public String getOpcode() {
@@ -125,4 +188,50 @@ public class Blocks {
     }
     return "";
   }
+  
+  
+  /**
+   * Méthode privée utilisée pour vérifier si l'objet en question est une variable
+   * @param Object o objet à tester
+   * @ return true s'il s'agit d'une variable, false sinon
+  */
+  private boolean testVariable(Object o){
+    /* Pour être une variable o doit soit :
+    * - être un String VARIABLE
+    * - être une liste d'objets telle que pour chaque nouveau objet, testVariable(nouveau_objet) renvoie true 
+    */
+    boolean res = true;
+    if (o instanceof String){
+      String s = (String)o;
+      if(!s.equals("VARIABLE")){
+        res = false;
+      }
+    } else if (o instanceof List){
+      List<Object> l = (List<Object>) o;
+      for (int i = 0; i < l.size() && res; i++){
+        res = res && testVariable(l.get(i));
+      }
+    } else {
+      res = false;
+    }
+    
+    return res;
+    
+  }
+  
+  /**
+   * Renvoie true si tout les fields sont initialisé à VARIABLE, false sinon
+   * @return true si chaque field vaut VARIABLE, false sinon.
+  */
+  public boolean allFieldVariable(){
+    boolean res = !(this.fields.isEmpty());
+    for(Map.Entry<String,List<Object>> bf : this.fields.entrySet()){
+      for (Object o : bf.getValue()){
+        res = res && testVariable(o);  
+      }
+    }
+    return res;
+    
+  }
+  
 }

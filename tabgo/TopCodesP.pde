@@ -14,7 +14,7 @@ class TopCodesP{
   
   LinkedList<TopCode> getCodes(){
     return triCodes(this.codes); 
-  } 
+  }
   
   void setCodes(LinkedList<TopCode> c){
     this.codes = c; 
@@ -25,7 +25,7 @@ class TopCodesP{
     double y1 = tc.getCenterY();       
     double y2 = tc2.getCenterY();
     double height = ((tc.getDiameter()+tc2.getDiameter())/2)*0.8;
-    
+    height /= 10;
     if (y1 - height <= y2 && y2 <= y1 + height) {
       return true;
     }
@@ -78,7 +78,8 @@ LinkedList<TopCode> findTopCodes(List<TopCode> codesF){
           }
           taille--;
       }
-    this.codes = listeTopCodes; 
+   this.codes = listeTopCodes; 
+    
    return listeTopCodes;
   
 }   

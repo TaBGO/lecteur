@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Iterator;
 /*
 * Classe permettant de gérer la gestion des blocs et notamment de l'ajout d'un TopCode ou d'un cubarithmes
 * @author EBRAN Kenny
@@ -28,7 +28,6 @@ public class GestionBlocks {
     try {
       br = new BufferedReader(new FileReader(csvFile));
       while((line = br.readLine()) != null) {
-        
         //Suppression des espaces de fins
         line.trim();
         
@@ -44,7 +43,6 @@ public class GestionBlocks {
         
         //use comma as separator
         String[] blocks = line.split(csvSplitBy);
-        
         Blocks b = tb.new Blocks(blocks[2]);
         boolean field = false;
         int i = 3;
@@ -62,7 +60,6 @@ public class GestionBlocks {
           tmp.add(null);
           b.getFields().put(blocks[i],tmp);
         }
-        
         listBlocks.put(blocks[1], b);
        }
     } catch(IOException e) {
@@ -77,8 +74,16 @@ public class GestionBlocks {
       }  
     }
   }
-  
+  /*
+  * Renvoie une copie profonde de la liste des blocks disponibles
+  * @return la copie de la liste des blocks disponibles
+  */
   public Map<String,Blocks>getListBlocks() {
+    Map<String, Blocks> res = new LinkedHashMap<String, Blocks>();
+    for (Map.Entry<String, Blocks> bl : this.listBlocks.entrySet()){
+       String val = bl.getKey();
+       res.put(val,bl.getValue().copy());
+    }
     return listBlocks;
   }
   
@@ -99,10 +104,16 @@ public class GestionBlocks {
   * @param prev : numéro du bloc précédant, correspond à l'ordre de traitement
   */
   public void ajoutTopCode(List<Blocks> list, TopCode code, boolean topLevel,int current, int prev) {
-    Blocks blockToAdd = tb.new Blocks(listBlocks.get(String.valueOf(code.getCode())));
+    Blocks blockToAdd = tb.new Blocks(getListBlocks().get(String.valueOf(code.getCode())));
     blockToAdd.setTopLevel(topLevel);
     if( ! topLevel) {
-      list.get(prev).setNext("bloc" + current);
+      Blocks der = list.get(prev);
+      int ancien = prev - 1;
+      while (der.opcode.contains("operator")){
+        der = list.get(ancien);
+        ancien--;
+      }
+      list.get(++ancien).setNext("bloc"+current); 
     }
     list.add(blockToAdd);
   }
@@ -117,10 +128,7 @@ public class GestionBlocks {
   * @param parent : numéro du bloc parent, correspond à l'ordre de traitement
   */
   public void ajoutTopCode(List<Blocks> list, TopCode code,boolean topLevel, int current, int prev, int parent) {
-    String champ;
-      List<Object> listToAdd;
-      List<Object> tmp;
-      if(isVariable(code.getCode())) {
+    if(isVariable(code.getCode())) {
         addVariable(list, code, parent); 
       } else {
         addBlock(list, code, topLevel, current, prev, parent);
@@ -141,11 +149,11 @@ public class GestionBlocks {
     String champ;
     List<Object> listToAdd;
     List<Object> tmp;
-    Blocks blockToAdd = tb.new Blocks(listBlocks.get(String.valueOf(code.getCode())));
+    Blocks blockToAdd = tb.new Blocks(getListBlocks().get(String.valueOf(code.getCode())));
     blockToAdd.setTopLevel(topLevel);
     if( ! topLevel) {
       champ = list.get(parent).hasInput();
-      if(! champ.equals("")) {
+      if(!champ.equals("")) {
         listToAdd = new ArrayList<Object>();
         if(hasShadow(champ)) {
           listToAdd.add(3);
@@ -159,13 +167,31 @@ public class GestionBlocks {
           listToAdd.add("bloc"+current);
          }
         list.get(parent).getInputs().put(champ, listToAdd);
-        
       } else {
-        list.get(prev).setNext("bloc"+current);
+          Blocks der = list.get(prev);
+          int ancien = prev;
+          while (der.opcode.contains("operator")){
+            ancien--;
+            der = list.get(ancien);
+          }  
+          list.get(ancien).setNext("bloc"+current);
+                  
+          if ((list.get(prev).inputs != null) &&  (blockToAdd.opcode.contains("operator"))){
+            blockToAdd.setParent("bloc"+parent);
+          } else {
+            der = list.get(prev);
+            ancien = prev - 1;
+            while (ancien >= 0 && (!der.opcode.contains("control_if") && !der.opcode.contains("control_repeat") && !der.opcode.contains("control_forever"))){ // A Modifier : on remonte jusqu'au dernier controle, à vérifier si ce n'est pas un controle déjà finit, alors remonter encore plus loin
+              der = list.get(ancien);
+              ancien--;
+            }
+            if (ancien++ >= 0){
+              blockToAdd.setParent("bloc"+ancien);
+            }
+          }
       }
-      blockToAdd.setParent("bloc"+parent);
-    }
-    list.add(blockToAdd);
+      list.add(blockToAdd);
+    } 
   }
   
   /*
@@ -179,26 +205,43 @@ public class GestionBlocks {
     String champ;
     List<Object> listToAdd;
     List<Object> tmp;
-      listToAdd = new ArrayList();
-      champ = list.get(parent).hasInput();
-      String var = code.getCode() == 357 ? "var1" : "var2";
-      if(champ.equals("") && isDataVariable(list.get(parent).getOpcode())) {
-        listToAdd.add(var);
-        listToAdd.add(var);
-        list.get(parent).getFields().put("VARIABLE", listToAdd);
-      } else {
-        listToAdd.add(3);
-        tmp = new ArrayList();
-        tmp.add(12);
-        tmp.add(var);
-        tmp.add(var);
-        listToAdd.add(tmp);
-        List<Object> tmp2 = new ArrayList();
-        tmp2.add(10);
-        tmp2.add("");
-        listToAdd.add(tmp2);
-        list.get(parent).getInputs().replace(champ, listToAdd);
-      }
+    listToAdd = new ArrayList();
+    champ = list.get(parent).hasInput();
+    String var;
+    switch(code.getCode()){
+    case 357:
+      var = "var1";
+      break;
+    case 361:
+      var = "var2";
+      break;
+    case 403: // 90°
+      var = "quart_de_tour";
+      break;
+    case 405: // 180°
+      var = "demi_tour";
+      break;
+    default:
+      var = "erreur";
+    }
+    if(champ.equals("") && isDataVariable(list.get(parent).getOpcode())) {
+      listToAdd.clear();
+      listToAdd.add(var);
+      listToAdd.add(var);
+      list.get(parent).getFields().put("VARIABLE", listToAdd);
+    } else {
+      listToAdd.add(3);
+      tmp = new ArrayList();
+      tmp.add(12);
+      tmp.add(var);
+      tmp.add(var);
+      listToAdd.add(tmp);
+      List<Object> tmp2 = new ArrayList();
+      tmp2.add(10);
+      tmp2.add("");
+      listToAdd.add(tmp2);
+      list.get(parent).getInputs().replace(champ, listToAdd);
+    }
   }
   
   /*
@@ -300,6 +343,8 @@ public class GestionBlocks {
     switch(code) {
     case 357:
     case 361:
+    case 403:
+    case 405:
       return true;
     default:
       return false;
@@ -330,4 +375,6 @@ public class GestionBlocks {
     }
     return -1;
   }
+  
+  
 }

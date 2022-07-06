@@ -72,18 +72,15 @@ class Braille {
   Character decodeCube(Cube monCube) {
 
     Character sortie = '@';
-
+    
     String chaine = ""+ 
       zoneEnString(monCube.s1, monCube.n1)+zoneEnString(monCube.s2, monCube.n2)+
       zoneEnString(monCube.s3, monCube.n3)+zoneEnString(monCube.s4, monCube.n4)+
       zoneEnString(monCube.s5, monCube.n5)+zoneEnString(monCube.s6, monCube.n6);
     
-    
     if (dicoBraille.containsKey(chaine)) {
       sortie = dicoBraille.get(chaine);
     }
-    
-    
     return sortie;
   }
  /**
