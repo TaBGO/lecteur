@@ -19,7 +19,7 @@ public class DetectionCube {
     mesPoints = new ArrayList<Point>();
     monBraille = new Braille();
 
-    maCouleur = color(68, 101, 126); /* color(7,74,172); pour les tests utilisant des cubarithmes */
+    maCouleur = color(68, 101, 126);
     imageSource = src;
 
     recherche();

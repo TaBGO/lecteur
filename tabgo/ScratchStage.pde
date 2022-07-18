@@ -47,6 +47,27 @@ public class ScratchStage extends ScratchObject{
     list.add("var2");
     list.add(0);
     variables.put("var2",list);
+    
+    list = new ArrayList();
+    list.add("quart");
+    list.add(0);
+    variables.put("quart",list);
+    list = new ArrayList();
+    list.add("demi");
+    list.add(0);
+    variables.put("demi",list);
+ 
+    list = new ArrayList();
+    list.add("liste_export");
+    list.add(new ArrayList());
+    lists.put("liste_export",list);
+    
+    list = new ArrayList();
+    list.add("liste_temp");
+    list.add(new ArrayList());
+    lists.put("liste_temp",list);
+    
+    
   }
   
   public List<ScratchCostume> getCostumes(){

@@ -49,6 +49,7 @@ public class GestionBlocks {
         while(i < blocks.length && ! field) {
           if(blocks[i].equals("F")) {
             field = true;
+ //           i--;
           } else {
             b.getInputs().put(blocks[i], new ArrayList<Object>());
           }
@@ -95,6 +96,34 @@ public class GestionBlocks {
     return ! listBlocks.get(code).getInputs().isEmpty();
   }
   
+  /* Méthode privée vérifiant si un bloc peut avoir un bloc suivant : si ce n'est pas une variable, liste, valeur de x/y ou un opérateur ou un itemoflist 
+  * @param Blocks der bloc à tester
+  * @return true s'il peut avoir un bloc suivant, false sinon
+  */
+  private boolean canHaveNext(Blocks der){
+    boolean res = true;
+    if (der.opcode.contains("operator")){
+      res = false;
+    } 
+    if (der.opcode.contains("demi") || 
+        der.opcode.contains("quart") || 
+        der.opcode.contains("var1") || 
+        der.opcode.contains("var2") ||
+        der.opcode.contains("chatparle") ||
+        der.opcode.contains("liste_temp") ||
+        der.opcode.contains("liste_export")        
+        ){
+      res = false;
+    }
+    if (der.opcode.equals("motion_xposition") || der.opcode.equals("motion_yposition")){
+      res = false;
+    }
+    if (der.opcode.equals("data_itemoflist")){
+      res = false;
+    }
+    
+    return res;
+  }
   /*
   * Méthode permettant d'ajouter à la liste des blocs donné en paramètre le bloc correspondant au TopCode donné (Version sans parent)
   * @param list : Liste des blocs
@@ -105,17 +134,74 @@ public class GestionBlocks {
   */
   public void ajoutTopCode(List<Blocks> list, TopCode code, boolean topLevel,int current, int prev) {
     Blocks blockToAdd = tb.new Blocks(getListBlocks().get(String.valueOf(code.getCode())));
-    blockToAdd.setTopLevel(topLevel);
-    if( ! topLevel) {
-      Blocks der = list.get(prev);
-      int ancien = prev - 1;
-      while (der.opcode.contains("operator")){
-        der = list.get(ancien);
-        ancien--;
+    List<Object> listToAdd;
+    if (isCustomBlock(code.getCode())){
+      if (isDefinition(code.getCode())){
+        
+        /* Block Définition */
+        blockToAdd.setOpcode("procedures_definition");
+        listToAdd = new ArrayList<Object>();
+        listToAdd.add(1);
+        listToAdd.add("bloc" + ++current);
+        blockToAdd.inputs.put("custom_block", listToAdd);          
+        list.add(blockToAdd);
+        /* Block Prototype */
+        BlockCustoms proto = new BlockCustoms("data_quart"); // Opcode temporaire
+        proto = proto.protoBlock(code.getCode());
+        proto.parent = "block"+--current;
+        current++;
+        list.add(proto);
+        
+      } else {
+        /* Appel de block custom*/
+        BlockCustoms blockcall = new BlockCustoms("data_quart"); // Opcode temporaire
+        blockcall = blockcall.protoBlock(code.getCode());
+        blockcall.setOpcode("procedures_call");          
+        blockcall.x = floor(code.getCenterX());
+        blockcall.y = floor(code.getCenterY());
+        Blocks der = list.get(prev);
+        /* S'il n'y a pas de parent, on regarde si le précédant était un bloc de départ pour l'y rattacher
+         * Utile pour utiliser plusieurs blocs de départ */
+        if (list.get(prev).getOpcode().contains("event")){
+          blockcall.setParent("bloc"+prev);
+        } 
+        int ancien = prev;
+        while(!canHaveNext(der)){
+          ancien--;
+          der = list.get(ancien);
+        } 
+        println("4");
+        list.get(ancien).setNext("bloc"+current);
+                
+        blockcall.mutation.remove("argumentnames");
+        blockcall.mutation.remove("argumentdefaults");
+        list.add(blockcall); 
       }
-      list.get(++ancien).setNext("bloc"+current); 
+    } else {
+      blockToAdd.setTopLevel(topLevel);
+      if( !topLevel) {
+        Blocks der = list.get(prev);
+        int ancien = prev - 1;
+        println("ancien : " + ancien + ", prev : " + prev);
+        if (list.get(prev).getOpcode().contains("event") || list.get(prev).getOpcode().equals("procedures_definition")){
+          blockToAdd.setParent("bloc"+prev);
+        }
+
+        while(!canHaveNext(der)){
+          der = list.get(ancien);
+          ancien--;
+        }
+        ancien++;
+        
+        if (ancien >= 0 && list.get(ancien).getOpcode().equals("procedures_prototype")){
+          ancien--;
+          blockToAdd.parent = "bloc"+ancien;
+        }
+        println("1 : " + list.get(ancien).getOpcode() + ", ancien :  block" + ancien + ", current : block" + current);
+        list.get(ancien).setNext("bloc"+current); 
+      }
+      list.add(blockToAdd);
     }
-    list.add(blockToAdd);
   }
   
   /*
@@ -152,45 +238,105 @@ public class GestionBlocks {
     Blocks blockToAdd = tb.new Blocks(getListBlocks().get(String.valueOf(code.getCode())));
     blockToAdd.setTopLevel(topLevel);
     if( ! topLevel) {
-      champ = list.get(parent).hasInput();
-      if(!champ.equals("")) {
-        listToAdd = new ArrayList<Object>();
-        if(hasShadow(champ)) {
-          listToAdd.add(3);
-          listToAdd.add("bloc"+current);
-          tmp = new ArrayList<Object>();
-          tmp.add(10);
-          tmp.add("");
-          listToAdd.add(tmp);
-         } else {
-          listToAdd.add(2);
-          listToAdd.add("bloc"+current);
-         }
-        list.get(parent).getInputs().put(champ, listToAdd);
-      } else {
+      if (isCustomBlock(code.getCode())){
+        if (isDefinition(code.getCode())){
+          
+          /* Block Définition */
+          blockToAdd.setOpcode("procedures_definition");
+          listToAdd = new ArrayList<Object>();
+          listToAdd.add(1);
+          listToAdd.add("bloc" + ++current);
+          blockToAdd.inputs.put("custom_block", listToAdd);          
+          list.add(blockToAdd);
+          
+          /* Block Prototype */
+          BlockCustoms proto = new BlockCustoms("data_quart"); // Opcode temporaire
+          proto = proto.protoBlock(code.getCode());
+          proto.parent = "block"+ --current;
+          current++;
+          list.add(proto);
+          
+        } else {
+          /* Appel de block custom*/
+          BlockCustoms blockcall = new BlockCustoms("data_quart"); // Opcode temporaire
+          blockcall = blockcall.protoBlock(code.getCode());
+          blockcall.setOpcode("procedures_call");
+          blockcall.x = floor(code.getCenterX());
+          blockcall.y = floor(code.getCenterY());
           Blocks der = list.get(prev);
           int ancien = prev;
-          while (der.opcode.contains("operator")){
+          while(!canHaveNext(der)){
             ancien--;
             der = list.get(ancien);
           }  
+          println("2");
           list.get(ancien).setNext("bloc"+current);
                   
-          if ((list.get(prev).inputs != null) &&  (blockToAdd.opcode.contains("operator"))){
-            blockToAdd.setParent("bloc"+parent);
+          if ((list.get(prev).inputs != null) &&  (blockcall.opcode.contains("operator"))){
+            blockcall.setParent("bloc"+parent);
           } else {
             der = list.get(prev);
             ancien = prev - 1;
-            while (ancien >= 0 && (!der.opcode.contains("control_if") && !der.opcode.contains("control_repeat") && !der.opcode.contains("control_forever"))){ // A Modifier : on remonte jusqu'au dernier controle, à vérifier si ce n'est pas un controle déjà finit, alors remonter encore plus loin
+            while (ancien >= 0 && (!der.opcode.contains("control_if") && !der.opcode.contains("control_repeat") && !der.opcode.contains("control_forever"))){ 
               der = list.get(ancien);
               ancien--;
             }
             if (ancien++ >= 0){
-              blockToAdd.setParent("bloc"+ancien);
+              blockcall.setParent("bloc"+ancien);
             }
           }
+          blockcall.mutation.remove("argumentnames");
+          blockcall.mutation.remove("argumentdefaults");
+          list.add(blockcall);
+        }
+      } else {
+        champ = list.get(parent).hasInput();
+        if(!champ.equals("")) {
+          listToAdd = new ArrayList<Object>();
+          if(hasShadow(champ)) {
+            listToAdd.add(3);
+            listToAdd.add("bloc"+current);
+            tmp = new ArrayList<Object>();
+            tmp.add(10);
+            tmp.add("");
+            listToAdd.add(tmp);
+           } else {
+            listToAdd.add(2);
+            listToAdd.add("bloc"+current);
+           }
+          list.get(parent).getInputs().put(champ, listToAdd);
+          blockToAdd.parent = "bloc"+parent;
+          
+        } else {
+            Blocks der = list.get(prev);
+            int ancien = prev;
+            while(!canHaveNext(der)){
+              ancien--;
+              der = list.get(ancien);
+            }  
+            if (list.get(ancien).getOpcode().equals("procedures_prototype")){
+              ancien--;
+            }
+            if (list.get(ancien).hasInput().equals("") && list.get(ancien).hasField().equals("") && canHaveNext(list.get(ancien))) {
+              println("3");
+              list.get(ancien).setNext("bloc"+current);
+            }    
+            if ((list.get(prev).inputs != null) &&  (blockToAdd.opcode.contains("operator"))){
+              blockToAdd.setParent("bloc"+parent);
+            } else {
+              der = list.get(prev);
+              ancien = prev - 1;
+              while (ancien >= 0 && (!der.opcode.contains("control_if") && !der.opcode.contains("control_repeat") && !der.opcode.contains("control_forever"))){ // A Modifier : on remonte jusqu'au dernier controle, à vérifier si ce n'est pas un controle déjà finit, alors remonter encore plus loin
+                der = list.get(ancien);
+                ancien--;
+              }
+              if (ancien++ >= 0){
+                blockToAdd.setParent("bloc"+ancien);
+              }
+            }
+        }
+        list.add(blockToAdd);
       }
-      list.add(blockToAdd);
     } 
   }
   
@@ -221,6 +367,18 @@ public class GestionBlocks {
     case 405: // 180°
       var = "demi_tour";
       break;
+    case 421:
+      var = "FIN";
+      break;
+    case 425:
+      var = "chatparle";
+      break;
+    case 433:
+      var = "liste_export";
+      break;
+    case 453:
+      var = "liste_temp";
+      break;  
     default:
       var = "erreur";
     }
@@ -229,6 +387,39 @@ public class GestionBlocks {
       listToAdd.add(var);
       listToAdd.add(var);
       list.get(parent).getFields().put("VARIABLE", listToAdd);
+    } else if (isDataList(list.get(parent).getOpcode())) {
+      List<Object> listToAdd2 = new ArrayList<Object>();
+      if (champ == ""){
+        /* Pas d'input on rempli Field */
+        listToAdd.clear();
+        listToAdd.add(var);
+        listToAdd.add(var);
+        list.get(parent).getFields().put("LIST",listToAdd);
+      } else {
+        /* Input : soit data_itemoflist soit data_addtolist */
+        if (champ.equals("INDEX")){
+          listToAdd.clear();
+          listToAdd.add(1);
+          listToAdd2.add(7);
+          listToAdd.add(listToAdd2);
+        } else {
+          listToAdd.clear();
+          listToAdd.add(3);
+          if (var.contains("list")){
+            listToAdd2.add(13);
+          } else {
+            listToAdd2.add(12);                        
+          }
+          listToAdd2.add(var);
+          listToAdd2.add(var);
+          listToAdd.add(listToAdd2);
+          listToAdd2 = new ArrayList();
+          listToAdd2.add(10);
+          listToAdd2.add("");
+          listToAdd.add(listToAdd2);
+        }
+        list.get(parent).getInputs().put(champ, listToAdd);   
+      }
     } else {
       listToAdd.add(3);
       tmp = new ArrayList();
@@ -256,7 +447,11 @@ public class GestionBlocks {
       List<Object> listToAdd = new ArrayList<Object>();
       listToAdd.add(1);
       List<Object> tmp = new ArrayList<Object>();
-      tmp.add(10);
+      if (champ.contains("INDEX")){
+        tmp.add(7);
+      } else {
+        tmp.add(10);
+      }
       tmp.add(chaine);
       listToAdd.add(tmp);
       list.get(prev).getInputs().put(champ, listToAdd);
@@ -328,6 +523,7 @@ public class GestionBlocks {
       case "STRING1":
       case "STRING2":
       case "VALUE":
+      case "ITEM":
         return true;
       default:
         return false;
@@ -345,6 +541,10 @@ public class GestionBlocks {
     case 361:
     case 403:
     case 405:
+    case 421:
+    case 425:
+    case 433:
+    case 453:
       return true;
     default:
       return false;
@@ -376,5 +576,89 @@ public class GestionBlocks {
     return -1;
   }
   
+  /*
+  * Méthode permettant de savoir si un block est un block custom : définition ou appel
+  */
+  public boolean isCustomBlock(String opcode){
+      if ((opcode.equals("procedures_definition")) ||(opcode.equals("procedures_call"))){
+        return true;
+      } else {
+        return false;
+      }
+  }
   
+  /*
+  * Méthode permettant de savoir si un block est un block custom : définition ou appel
+  */
+  public boolean isCustomBlock(int code){
+      boolean test;
+      switch(code){
+      case 213:
+      case 217:
+      case 227:
+      case 229:
+      case 233:
+      case 241:
+      case 409:
+      case 419:
+        test = true;
+        break;
+      default:
+        test = false;
+      }
+      return test;
+  }
+  /*
+  * Méthode permettant de savoir si un block est un block custom : définition ou appel
+  */
+  public boolean isDefinition(int code){
+      boolean test;
+      switch(code){
+      case 213:
+      case 217:
+      case 227:
+      case 409:
+        test = true;
+        break;
+      default:
+        test = false;
+      }
+      return test;
+  }
+  
+  /*
+  * Méthode qui permet de savoir si le opcode donné en paramètre correspond à un bloc data_list
+  * @param opcode : Opcode
+  * @return true si le opCode correspond à un bloc data_list, sinon false
+  */
+  public boolean isDataList(String opcode) {
+    switch(opcode) {
+    case "data_hidelist":
+    case "data_showlist":
+    case "data_deletealloflist":
+    case "data_itemoflist":
+    case "data_addtolist":
+      return true;
+    default:
+      return false;
+    }
+  }
+   
+  /*
+  * Méthode qui permet de savoir si le code donné en paramètre correspond à un bloc data_list
+  * @param code : code
+  * @return true si le code correspond à un bloc data_list, sinon false
+  */
+  public boolean isDataList(int code) {
+    switch(code) {
+    case 457:
+    case 465:
+    case 551:
+    case 555:
+    case 563:
+      return true;
+    default:
+      return false;
+    }
+  }
 }

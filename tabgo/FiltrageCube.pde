@@ -51,7 +51,6 @@ public class FiltrageCubes {
     double y1 = tc.getCenterY();
     double y2 = cube.c.y;    
     double height = (double)cube.hauteur*0.9;
-    
     return (y1 - height <= y2) && (y2 <= y1 + height);
   }
   
@@ -130,7 +129,7 @@ public class FiltrageCubes {
     Deque<Integer> parents = new ArrayDeque<Integer>();
     
     TopCode code;
-    boolean topLevel = false;
+    boolean topLevel = false;  
     Cube cube;
     
     while (i<tc.size()) {
@@ -138,8 +137,16 @@ public class FiltrageCubes {
        if(j < lcubes.size()){
          cube = lcubes.get(j);
          if(estSuperieur(code, cube)){
-           println("code : " + code.getCode()); 
-           topLevel = i == 0;
+           switch(code.getCode()){
+           case 31:
+           case 47:
+             topLevel = true;
+             break;
+           default:
+             topLevel = false;
+           }
+
+           println("code : " + code.getCode() + ", " + code.getCenterX() + ", " + code.getCenterY()); 
            if(g.isStopBlock(code.getCode())) {
              prev = parents.removeFirst();
            } else if (g.isElseBlock(code.getCode())){
@@ -148,19 +155,27 @@ public class FiltrageCubes {
            } else {
              prev = addTopCode(g, prev, cur, listBlocks, parents, code, topLevel);
              cur = g.isVariable(code.getCode()) ? cur : cur + 1;
+             cur = g.isDefinition(code.getCode()) ? cur + 1 : cur;
            }
            i++;
          } 
          else {
-           println("cube : " + cube.getValue());
+           println("cube : " + cube.getValue() + ", " + cube.c.x + ", " + cube.c.y);
            addCubarithme(g, prev, listBlocks, parents, String.valueOf(cube.getValue()));
             j++;
          } 
          
        } 
        else {
-         println("code : " + code.getCode());
-         topLevel = i == 0;
+         println("code : " + code.getCode() + ", parents : " + parents);
+         switch(code.getCode()){
+         case 31:
+         case 47:
+           topLevel = true;
+           break;
+         default:
+           topLevel = false;
+         }
          if(g.isStopBlock(code.getCode())) {
              prev = parents.removeFirst();
          } else if (g.isElseBlock(code.getCode())){
@@ -169,6 +184,7 @@ public class FiltrageCubes {
            } else {
            prev = addTopCode(g, prev, cur, listBlocks, parents, code, topLevel);
            cur = g.isVariable(code.getCode()) ? cur : cur + 1;
+           cur = g.isDefinition(code.getCode()) ? cur+1 : cur;
          }
          i++;
        }   
@@ -194,19 +210,29 @@ public class FiltrageCubes {
   */
   private void addCubarithme(GestionBlocks g, int prev, List<Blocks> listBlocks, Deque<Integer> parents, String chaine) {
     int i = 0;
-    while ((listBlocks.get(prev)).hasInput().equals("")){
+    while ((listBlocks.get(prev)).hasInput() != null && listBlocks.get(prev).hasInput().equals("")){
      prev--;
      i++;
-   }
+    }
     g.ajoutCubarithme(listBlocks, chaine,prev);
     if(! parents.isEmpty() 
-     && listBlocks.get(parents.peekFirst()).hasInput().equals("") 
-     && listBlocks.get(parents.peekFirst()).hasField().equals("")
-     && !listBlocks.get(parents.peekFirst()).allFieldVariable()
-     && ! g.isControlBlock(g.getTopcode(listBlocks.get(parents.peekFirst()).getOpcode()))) {
-     parents.removeFirst();
-   }
-   prev += i;
+      && listBlocks.get(parents.peekFirst()).hasInput().equals("") 
+      && listBlocks.get(parents.peekFirst()).hasField().equals("")
+      && !listBlocks.get(parents.peekFirst()).allFieldVariable()
+      && !listBlocks.get(parents.peekFirst()).allFieldList()
+      && ! g.isControlBlock(g.getTopcode(listBlocks.get(parents.peekFirst()).getOpcode()))) {
+      parents.removeFirst();
+      if (!parents.isEmpty()){
+        Blocks b = listBlocks.get(parents.peekFirst());
+        while (!parents.isEmpty() && b.getOpcode().contains("operator") && b.hasInput().equals("")){
+          parents.removeFirst();
+          b = listBlocks.get(parents.peekFirst());
+        }
+      }
+
+    }
+  
+    prev += i;
   }
   /*
   * Méthode privée permettant d'ajouter un bloc à la liste des blocs
@@ -221,19 +247,30 @@ public class FiltrageCubes {
   */
   private int addTopCode(GestionBlocks g, int prev, int cur, List<Blocks> listBlocks, Deque<Integer> parents,
     TopCode code, boolean topLevel) {
-    if(! parents.isEmpty()) {
+    if(!parents.isEmpty()) {
        g.ajoutTopCode(listBlocks, code,topLevel, cur, prev, parents.peekFirst());
     } else {
          g.ajoutTopCode(listBlocks, code, topLevel, cur, prev);
     }
-    if(g.hasInput(String.valueOf(code.getCode()))) {
-      parents.addFirst(cur);      
+    if(g.hasInput(String.valueOf(code.getCode())) || g.isDefinition(code.getCode())) {
+      parents.addFirst(cur);
+    } else if(g.isDataList(code.getCode())){
+      parents.addFirst(cur);
     } else if(! parents.isEmpty()
              && listBlocks.get(parents.peekFirst()).hasInput().equals("")
              && listBlocks.get(parents.peekFirst()).hasField().equals("")
              && !listBlocks.get(parents.peekFirst()).allFieldVariable()
+             && !listBlocks.get(parents.peekFirst()).allFieldList()
              && ! g.isControlBlock(g.getTopcode(listBlocks.get(parents.peekFirst()).getOpcode()))) {
       parents.removeFirst();
+      
+      if (!parents.isEmpty()){
+        Blocks b = listBlocks.get(parents.peekFirst());
+        while (!parents.isEmpty() && (b.getOpcode().contains("operator") && b.hasInput().equals(""))){
+          parents.removeFirst();
+          b = listBlocks.get(parents.peekFirst());
+        }
+      }
     }
     prev = listBlocks.size() - 1;
     return prev;

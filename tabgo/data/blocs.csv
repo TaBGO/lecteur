@@ -30,9 +30,9 @@
 27,203,motion_xposition
 28,205,motion_yposition
 29,211,motion_direction
-30,213,procedures_definition,custom_block
-31,217,procedures_definition,custom_block
-32,227,procedures_definition,custom_block
+30,213,procedures_definition
+31,217,procedures_definition
+32,227,procedures_definition
 33,229,procedures_call
 34,233,procedures_call
 35,241,procedures_call
@@ -61,3 +61,14 @@
 58,405,data_demi
 59,357,data_var1
 60,361,data_var2
+61,409,procedures_definition
+62,419,procedures_call
+63,421,data_FIN
+64,425,data_chatparle
+65,433,data_listexport
+66,453,data_listtemp
+67,457,data_hidelist,F,LIST,LIST
+68,465,data_showlist,F,LIST,LIST
+69,551,data_deletealloflist,F,LIST,LIST
+70,555,data_itemoflist,INDEX,F,LIST,LIST
+71,563,data_addtolist,ITEM,F,LIST,LIST
