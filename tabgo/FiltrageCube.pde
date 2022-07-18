@@ -146,7 +146,7 @@ public class FiltrageCubes {
              topLevel = false;
            }
 
-           println("code : " + code.getCode() + ", " + code.getCenterX() + ", " + code.getCenterY()); 
+           println("code : " + code.getCode()); 
            if(g.isStopBlock(code.getCode())) {
              prev = parents.removeFirst();
            } else if (g.isElseBlock(code.getCode())){
@@ -160,14 +160,14 @@ public class FiltrageCubes {
            i++;
          } 
          else {
-           println("cube : " + cube.getValue() + ", " + cube.c.x + ", " + cube.c.y);
+           println("cube : " + cube.getValue());
            addCubarithme(g, prev, listBlocks, parents, String.valueOf(cube.getValue()));
             j++;
          } 
          
        } 
        else {
-         println("code : " + code.getCode() + ", parents : " + parents);
+         println("code : " + code.getCode());
          switch(code.getCode()){
          case 31:
          case 47:

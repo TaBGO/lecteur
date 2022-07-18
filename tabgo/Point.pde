@@ -52,7 +52,6 @@ class Point {
       moyennex += point.x*(1-(point.score/255));
       moyenney += point.y*(1-(point.score/255));
       dx += (1-(point.score/255));
-      //println(1-(point.score/255));
     }
     monPoint = new PVector(moyennex/dx, moyenney/dx);
    

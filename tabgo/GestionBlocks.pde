@@ -170,7 +170,6 @@ public class GestionBlocks {
           ancien--;
           der = list.get(ancien);
         } 
-        println("4");
         list.get(ancien).setNext("bloc"+current);
                 
         blockcall.mutation.remove("argumentnames");
@@ -182,7 +181,6 @@ public class GestionBlocks {
       if( !topLevel) {
         Blocks der = list.get(prev);
         int ancien = prev - 1;
-        println("ancien : " + ancien + ", prev : " + prev);
         if (list.get(prev).getOpcode().contains("event") || list.get(prev).getOpcode().equals("procedures_definition")){
           blockToAdd.setParent("bloc"+prev);
         }
@@ -197,7 +195,6 @@ public class GestionBlocks {
           ancien--;
           blockToAdd.parent = "bloc"+ancien;
         }
-        println("1 : " + list.get(ancien).getOpcode() + ", ancien :  block" + ancien + ", current : block" + current);
         list.get(ancien).setNext("bloc"+current); 
       }
       list.add(blockToAdd);
@@ -269,7 +266,6 @@ public class GestionBlocks {
             ancien--;
             der = list.get(ancien);
           }  
-          println("2");
           list.get(ancien).setNext("bloc"+current);
                   
           if ((list.get(prev).inputs != null) &&  (blockcall.opcode.contains("operator"))){
@@ -318,7 +314,6 @@ public class GestionBlocks {
               ancien--;
             }
             if (list.get(ancien).hasInput().equals("") && list.get(ancien).hasField().equals("") && canHaveNext(list.get(ancien))) {
-              println("3");
               list.get(ancien).setNext("bloc"+current);
             }    
             if ((list.get(prev).inputs != null) &&  (blockToAdd.opcode.contains("operator"))){
