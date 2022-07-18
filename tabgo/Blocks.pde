@@ -10,15 +10,15 @@ import java.util.stream.*;
 */
 
 public class Blocks {
-  private String opcode;
-  private String next = null;
-  private String parent = null;
-  private Map<String,List<Object>> inputs = new LinkedHashMap<String,List<Object>>();
-  private Map<String,List<Object>> fields = new LinkedHashMap<String,List<Object>>();
-  private boolean shadow;
-  private boolean topLevel;
-  private int x;
-  private int y;
+  protected String opcode;
+  protected String next = null;
+  protected String parent = null;
+  protected Map<String,List<Object>> inputs = new LinkedHashMap<String,List<Object>>();
+  protected Map<String,List<Object>> fields = new LinkedHashMap<String,List<Object>>();
+  protected boolean shadow;
+  protected boolean topLevel;
+  protected int x;
+  protected int y;
   
   /*
   * Constructeur qui crée une instance d'un Block
@@ -99,6 +99,7 @@ public class Blocks {
     b.topLevel = this.topLevel;
     b.x = this.x;
     b.y = this.y;
+    
     return b;
   }
   
@@ -162,6 +163,7 @@ public class Blocks {
   public void setTopLevel(boolean topLevel) {
     this.topLevel = topLevel;
   }
+
   
   /*
   * Méthode permettant de savoir si un bloc a des inputs et renvoie le champ de l'input qui est vide, sinon une chaine vide
@@ -191,25 +193,28 @@ public class Blocks {
   
   
   /**
-   * Méthode privée utilisée pour vérifier si l'objet en question est une variable
+   * Méthode privée utilisée pour vérifier si l'objet en question est une variable ou une liste selon le String donné en entrée
+   * Ici liste est à prendre au sens de variable_liste de Scratch et pas une List<T> liste
    * @param Object o objet à tester
-   * @ return true s'il s'agit d'une variable, false sinon
+   * @param String s: si == VARIABLE cherche si o est une variable
+   *                  si == LIST cherche si o est une liste
+   * @ return true s'il s'agit d'une variable ou d'une liste, false sinon
   */
-  private boolean testVariable(Object o){
-    /* Pour être une variable o doit soit :
-    * - être un String VARIABLE
-    * - être une liste d'objets telle que pour chaque nouveau objet, testVariable(nouveau_objet) renvoie true 
+  private boolean test(Object o, String compare){
+    /* Pour être une variable ou une liste o doit soit :
+    * - être un String VARIABLE/LIST
+    * - être une liste d'objets telle que pour chaque nouveau objet, test(nouveau_objet, s) renvoie true 
     */
     boolean res = true;
     if (o instanceof String){
       String s = (String)o;
-      if(!s.equals("VARIABLE")){
+      if(!s.equals(compare)){
         res = false;
       }
     } else if (o instanceof List){
       List<Object> l = (List<Object>) o;
       for (int i = 0; i < l.size() && res; i++){
-        res = res && testVariable(l.get(i));
+        res = res && test(l.get(i), compare);
       }
     } else {
       res = false;
@@ -227,11 +232,26 @@ public class Blocks {
     boolean res = !(this.fields.isEmpty());
     for(Map.Entry<String,List<Object>> bf : this.fields.entrySet()){
       for (Object o : bf.getValue()){
-        res = res && testVariable(o);  
+        res = res && test(o,"VARIABLE");  
       }
     }
     return res;
     
   }
   
+  /**
+   * Renvoie true si tout les fields sont initialisé à LIST, false sinon
+   * @return true si chaque field vaut LIST, false sinon.
+  */
+  public boolean allFieldList(){
+    boolean res = !(this.fields.isEmpty());
+    for(Map.Entry<String,List<Object>> bf : this.fields.entrySet()){
+      for (Object o : bf.getValue()){
+        res = res && test(o,"LIST");  
+      }
+    }
+    return res;
+    
+  }
+ 
 }
