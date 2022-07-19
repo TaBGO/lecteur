@@ -49,7 +49,6 @@ public class GestionBlocks {
         while(i < blocks.length && ! field) {
           if(blocks[i].equals("F")) {
             field = true;
- //           i--;
           } else {
             b.getInputs().put(blocks[i], new ArrayList<Object>());
           }
@@ -121,7 +120,9 @@ public class GestionBlocks {
     if (der.opcode.equals("data_itemoflist")){
       res = false;
     }
-    
+    if (der.opcode.equals("control_stop") || der.opcode.equals("control_forever")){
+      res = false;
+    }
     return res;
   }
   /*
@@ -304,31 +305,31 @@ public class GestionBlocks {
           blockToAdd.parent = "bloc"+parent;
           
         } else {
-            Blocks der = list.get(prev);
-            int ancien = prev;
-            while(!canHaveNext(der)){
-              ancien--;
+          Blocks der = list.get(prev);
+          int ancien = prev;
+          while(!canHaveNext(der)){
+            ancien--;
+            der = list.get(ancien);
+          }  
+          if (list.get(ancien).getOpcode().equals("procedures_prototype")){
+            ancien--;
+          }
+          if (list.get(ancien).hasInput().equals("") && list.get(ancien).hasField().equals("") && canHaveNext(list.get(ancien))) {
+            list.get(ancien).setNext("bloc"+current);
+          }    
+          if ((list.get(prev).inputs != null) &&  (blockToAdd.opcode.contains("operator"))){
+            blockToAdd.setParent("bloc"+parent);
+          } else {
+            der = list.get(prev);
+            ancien = prev - 1;
+            while (ancien >= 0 && (!der.opcode.contains("control_if") && !der.opcode.contains("control_repeat") && !der.opcode.contains("control_forever"))){ // A Modifier : on remonte jusqu'au dernier controle, à vérifier si ce n'est pas un controle déjà finit, alors remonter encore plus loin
               der = list.get(ancien);
-            }  
-            if (list.get(ancien).getOpcode().equals("procedures_prototype")){
               ancien--;
             }
-            if (list.get(ancien).hasInput().equals("") && list.get(ancien).hasField().equals("") && canHaveNext(list.get(ancien))) {
-              list.get(ancien).setNext("bloc"+current);
-            }    
-            if ((list.get(prev).inputs != null) &&  (blockToAdd.opcode.contains("operator"))){
-              blockToAdd.setParent("bloc"+parent);
-            } else {
-              der = list.get(prev);
-              ancien = prev - 1;
-              while (ancien >= 0 && (!der.opcode.contains("control_if") && !der.opcode.contains("control_repeat") && !der.opcode.contains("control_forever"))){ // A Modifier : on remonte jusqu'au dernier controle, à vérifier si ce n'est pas un controle déjà finit, alors remonter encore plus loin
-                der = list.get(ancien);
-                ancien--;
-              }
-              if (ancien++ >= 0){
-                blockToAdd.setParent("bloc"+ancien);
-              }
+            if (ancien++ >= 0){
+              blockToAdd.setParent("bloc"+ancien);
             }
+          }
         }
         list.add(blockToAdd);
       }
@@ -557,6 +558,22 @@ public class GestionBlocks {
     case "data_changevariableby":
     case "data_showvariable":
     case "data_hidevariable":
+      return true;
+    default:
+      return false;
+    }
+  }
+  /*
+  * Méthode qui permet de savoir si le opcode donné en paramètre correspond à un bloc data_variable
+  * @param opcode : Opcode
+  * @return true si le opCode correspond à un bloc data_variable, sinon false
+  */
+  public boolean isDataVariable(int code) {
+    switch(code) {
+    case 369:
+    case 391:
+    case 395:
+    case 397:
       return true;
     default:
       return false;

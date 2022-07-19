@@ -247,14 +247,17 @@ public class FiltrageCubes {
   */
   private int addTopCode(GestionBlocks g, int prev, int cur, List<Blocks> listBlocks, Deque<Integer> parents,
     TopCode code, boolean topLevel) {
+    if(topLevel){
+      parents.clear();
+    }
     if(!parents.isEmpty()) {
-       g.ajoutTopCode(listBlocks, code,topLevel, cur, prev, parents.peekFirst());
+      g.ajoutTopCode(listBlocks, code,topLevel, cur, prev, parents.peekFirst());      
     } else {
-         g.ajoutTopCode(listBlocks, code, topLevel, cur, prev);
+      g.ajoutTopCode(listBlocks, code, topLevel, cur, prev);
     }
     if(g.hasInput(String.valueOf(code.getCode())) || g.isDefinition(code.getCode())) {
       parents.addFirst(cur);
-    } else if(g.isDataList(code.getCode())){
+    } else if(g.isDataList(code.getCode()) || g.isDataVariable(code.getCode())){
       parents.addFirst(cur);
     } else if(! parents.isEmpty()
              && listBlocks.get(parents.peekFirst()).hasInput().equals("")

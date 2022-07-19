@@ -31,14 +31,27 @@
  *                                 Ligne si ... alors ... sinon renommée => sinon, dû à son utilisation (topcode 91)
  *                                 Correction nom ligne Fin de boucle => Stop tout (topcode 103)
  *                                 Ajout ligne Fin boucle / Fin si (topcode 93)
- * Last Revision: 29/06/2022
+ *  - Ajout et automatisation du bloc de définition Récupération des données : 
+ *       Fonctionnement des call et définition de bloc custom
+ *       Utilisation possible de plusieurs bloc de départ
+ *       Fonctionnement des listes : hidelist, showlist, deletealloflist, itemoflist, addtolist
+ *       Variable privées : listtemp, listexport, FIN
+ *       Variable chatparle à utiliser si on ajoute le son dans l'exécution (pas celui du feedback) 
+ *       Modification de la documentation appropriée
+ *  - Ajout d'un fichier dans le dossier tabgo pour les topcodes des variables privées
+ *  - Ajout de tests et explications du résultat attendu
+ * Last Revision: 19/07/2022
  *
  * vérification pointeurs (20/06/22)
  * copie profonde des blocs (23/06/22) 
  * ajout des variables (23/06/22)
  * correction liste TopCodes (24/06/22)
- *
- * 
+ * implémentation des blocs customs et plusieurs blocs de départ possibles (5/07/22)
+ * implémentation des listes (6/07/22)
+ * variables listes, FIN, chatparle (8/07/22)
+ * automatisation de la récupération de données (8/07/22)
+ * modification doc et ajout fichier sur variables privées (18/07/22)
+ * création de tests et explications (19/07/22)
  */
 
 // import librairies

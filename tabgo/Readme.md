@@ -23,3 +23,8 @@ Pour plus d'informations sur la signification des différents éléments, voir l
 ### Changer les tests
 
 Pour changer le test traité en tapant 'T' ou 't', remplacer XXX par le numéro du test voulu : "/tests/test_SXXX.png" dans la méthode keyPressed de tabgo
+Pour plus d'information sur les test, voir le fichier Récapitulation_tests dans le dossier data/tests
+
+### Cas d'une boucle infini
+
+Lors d'une boucle infini, il n'y aura pas de feedback car le programme ne s'arrêtant pas, on ne peux pas avoir finit de récupérer les données. Cependant, le programme fonctionne quand même correctement ce qui peux être utile pour des élèves voyants. En général, il vaut mieux ne pas demander de construire des programmes infini (répéter indéfiniment) aux élèves malvoyant / non-voyants mais plutôt des boucles limitées : (répéter XXX fois / répéter jusqu'à)

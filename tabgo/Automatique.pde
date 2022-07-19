@@ -1,4 +1,4 @@
-/*
+7/*
 * Cette classe a été créée pour alléger le programme tabgo
 * Elle positionne dans la liste des TopCodes et Cubarithmes ceux nécessaires pour implémenter:
 * - l'initalisation des variables quart et demi
@@ -8,16 +8,37 @@
 public class Automatique{
   
   public void traite(TopCodesP ts, DetectionCube dc){
+    ts.triCodes(ts.codes);
+    dc.trie();
     /* Ajout TopCodes quart, demi et FIN */
     ajoutVariablesTP(ts);
     
     /* Ajout Cubarithmes associés */
     ajoutVariablesCB(ts, dc);
     
-    /* Ajout Bloc Définition Récup Données et appels à ce bloc */
-    ajoutBlocCustomSauvegardeDonnee(ts,dc);
+    /* Ajout Bloc Définition Récup Données et appels à ce bloc si l'on n'a pas de boucle infini */
+    if(canHaveBlocCustom(ts)){
+      ajoutBlocCustomSauvegardeDonnee(ts,dc);
+    }
   }
-  
+  /**
+  * Méthode privée vérifiant si la liste des TopCodes contient une boucle infinie
+  * @param ts liste des TopCodes
+  * @return true si pas de boucle infinie, false sinon
+  */
+  private boolean canHaveBlocCustom(TopCodesP ts){
+    boolean res = true;
+    for (int i = 0; i < ts.codes.size() && res; i++){ //Permet de s'arrêter plus tôt qu'un for(elem : ts) si nécessaire
+      TopCode t = ts.codes.get(i);
+      switch(t.getCode()){ //switch pour si jamais il y a de nouveaux blocs qui n'acceptent pas de next
+      case 79:
+        res = false;
+        break;
+      }
+    }
+    
+    return res; 
+  }
     /**
    * Rajoute à la liste des TopCodes les TopCodes nécessaires pour initialiser les variables quart et demi à 90 et 180 resp,
    * ainsi que FIN à 0;
@@ -154,30 +175,40 @@ public class Automatique{
   * @param ToCodesP ts la liste des TopCodes pù l'on va les rajouter
   */
   private void ajoutBlocCustomSauvegardeDonnee(TopCodesP ts, DetectionCube dc){
+    /* Ajout de FIN 
+    Pour l'ajouter, on va parcourir la liste des TopCodes, et regarder s'il y a des stop all.
+    Si c'est le cas, on va rajouter des TopCodes mettant FIN à 1 avant ces stop all.
+    */
+    addFinStopALL(ts,dc);
+    
     /* Récupération des données */
     int x,y;
     x = floor(ts.codes.peekLast().getCenterX());
     y = floor(ts.codes.peekLast().getCenterY())+50;
+    /* Si le dernier TopCode est un stop all (ce qui ne sert à rien mais est possible),
+    alors on ne rajoute pas le set Fin 1 après (ce qui serait impossible)
+    On peut quand même faire la récupération de donnée, vu que la fonction addFinStopALL a déjà rajouté un set Fin 1 avant le stop all
+    */
+    if (ts.codes.peekLast().getCode() != 103){
+      TopCode setFIN = new TopCode();
+      setFIN.setCode(369);
+      setFIN.setLocation(x,y);
+      ts.codes.add(setFIN);
+      x += 20;
+      
+      int tab[] = new int[]{1,0,0,0,0,1};
+      addCubarithme(x, y, '1', tab, dc);
     
-    /* Ajout de FIN */
-    TopCode setFIN = new TopCode();
-    setFIN.setCode(369);
-    setFIN.setLocation(x,y);
-    ts.codes.add(setFIN);
-    x += 20;
-    
-    int tab[] = new int[]{1,0,0,0,0,1};
-    addCubarithme(x, y, '1', tab, dc);
+      
+      dc.trie();
+      x += 20;
   
-    
-    dc.trie();
-    x += 20;
-
-    TopCode FIN = new TopCode();
-    FIN.setCode(421);
-    FIN.setLocation(x,y);
-    ts.codes.add(FIN);
-    x -= 40;
+      TopCode FIN = new TopCode();
+      FIN.setCode(421);
+      FIN.setLocation(x,y);
+      ts.codes.add(FIN);
+      x -= 40;
+    }
     y += 50;
 
     
@@ -213,6 +244,45 @@ public class Automatique{
     ts.triCodes(ts.codes);
   }
   
+  /**
+  * Méthode privée parcourant la liste des TopCodes à la recherche de stop all
+  * Si elle en trouve, rajoute des TopCodes et Cubarithmes pour mettre FIN à 1 avant d'arrêter
+  * @param ts liste des TopCodes
+  * @param dc liste des Cubarithmes
+  */
+  private void addFinStopALL(TopCodesP ts,DetectionCube dc){
+
+    int x;
+    int y;
+    List<TopCode> l = new ArrayList<TopCode>();
+    for (TopCode t : (LinkedList<TopCode>)ts.codes.clone()){
+      if (t.getCode() == 103){
+            x = int(t.getCenterX());
+            y = int(t.getCenterY()) - 15;
+            TopCode setFIN = new TopCode();
+            setFIN.setCode(369);
+            setFIN.setLocation(x,y);
+            l.add(setFIN);
+            x += 20;
+            
+            int tab[] = new int[]{1,0,0,0,0,1};
+            addCubarithme(x, y, '1', tab, dc);
+            
+            
+            dc.trie();
+            x += 20;
+            
+            TopCode FIN = new TopCode();
+            FIN.setCode(421);
+            FIN.setLocation(x,y);
+            l.add(FIN);
+      }
+    }
+    for (TopCode t : l){
+      ts.codes.add(t);
+    }
+    ts.triCodes(ts.codes);
+  }
   
   /*
   * Méthode créant le bloc custom de récupération des données au bon endroit
