@@ -1,4 +1,4 @@
-7/*
+/*
 * Cette classe a été créée pour alléger le programme tabgo
 * Elle positionne dans la liste des TopCodes et Cubarithmes ceux nécessaires pour implémenter:
 * - l'initalisation des variables quart et demi
