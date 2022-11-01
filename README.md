@@ -12,14 +12,14 @@ Des exemples d'algorithmes sont disponibles *ici* (*à venir*)
 
 Le code disponible **[là](./tabgo)** a principalement été développé au travers de plusieurs projets de fin d'étude : Jean-Baptiste Marco dans sa première mouture en java (stage de 2A ISAE-ENSMA) en 2018, Léa Berquez (stage de L3 Informatique - UT3) en 2020, un pool de 10 étudiants de L3 informatique (TER - UT3) en 2021 et Mathieu Campan (stage de 1A ENSEEIHT) en 2022.
 
-D'autres voies sont actuellement explorées pour permettre une exécution du code complètement non-visuelle.
+D'autres voies sont actuellement explorées pour permettre une exécution complètement non-visuelle du code.
 
 ## Technologies utilisées
 Le logiciel utilise [processing.org](https://www.processing.org) et les librairies *[OpenCV](./tabgo/code/opencv_processing4.52.jar)* recompilé avec la version OpenCV 4.52, *[Video](https://github.com/processing/processing-video)* (pour la reconnaissance optique) et *[gson](https://github.com/google/gson)* (pour la création des fichiers **sb3**).
-Enfin, la librairie *[TTSLib](https://www.local-guru.net/blog/pages/ttslib)* pour Processing est utilisée pour un feedback sonore.
+Enfin, une librairie de synthèse vocale en angalis est utilisée pour un feedback sonore (fournie directement).
 
 ## Installation (à n'effectuer qu'une fois)
-* Téléchargement du logiciel [Processing.org](https://processing.org/download)
+* Téléchargement du logiciel [Processing.org](https://processing.org/download) 4.0
 * Importation des librairies *[Video](https://github.com/processing/processing-video)* et *[TTSLib](https://www.local-guru.net/blog/pages/ttslib)* []téléchargeable aussi [ici](https://github.com/TaBGO/lecteur/blob/main/librairies/ttslib.zip) : 
 
 `Sketch -> Importer une librairie... -> Ajouter une librairie...`
@@ -40,3 +40,4 @@ Ce projet a été partiellement financé via un appel à projets de l'[UNADEV](h
 * Marco J.B., Baptiste-Jessel N., Truillet Ph., *[TaBGO : Programmation par blocs tangibles](https://hal.archives-ouvertes.fr/hal-02181953)* In: 30e Conference francophone sur l'Interaction Homme-Machine (IHM 2018), 23 October 2018 - 26 October 2018 (Brest, France)
 * Andriamahery-Ranjalahy K., Berquez L., Jessel N., Truillet Ph., *[TaBGO: towards accessible computer science in secondary school](https://hal.archives-ouvertes.fr/hal-03168307v1)*, In : 23rd International Conference on Human-Computer Interaction (HCI International 2021), Jul 2021, virtual place, United States.
 * Andriamahery-Ranjalahy K., Truillet Ph.,  *Permettre l’autonomie dans l’activité de programmation par blocs pour des enfants non-voyants*, In : 12e Conférence Handicap 2022, 8-10 Juin 2022 (Paris, France)
+* Andriamahery Ranjalahy K., Campan M., Baptiste-Jessel ., Truillet Ph., *An Autonomous Approach for Bloc-Based Coding Activities Oriented Towards Visually Impaired Pupils*, **soon**
