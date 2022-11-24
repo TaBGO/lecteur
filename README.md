@@ -40,3 +40,6 @@ Ce projet a été partiellement financé via un appel à projets de l'[UNADEV](h
 * Andriamahery-Ranjalahy K., Berquez L., Jessel N., Truillet Ph., *[TaBGO: towards accessible computer science in secondary school](https://hal.archives-ouvertes.fr/hal-03168307v1)*, In : 23rd International Conference on Human-Computer Interaction (HCI International 2021), Jul 2021, virtual place, United States.
 * Andriamahery-Ranjalahy K., Truillet Ph.,  *Permettre l’autonomie dans l’activité de programmation par blocs pour des enfants non-voyants*, In : 12e Conférence Handicap 2022, 8-10 Juin 2022 (Paris, France)
 * Andriamahery Ranjalahy K., Campan M., Baptiste-Jessel ., Truillet Ph., *An Autonomous Approach for Bloc-Based Coding Activities Oriented Towards Visually Impaired Pupils*, **soon**
+
+## Presse, informations
+* [Expérimentation au collège Lamartine / Toulouse - Juin 2021](https://lamartine.ecollege.haute-garonne.fr/le-college/projet-techno-programmation-scratch-pour-les-non-voyants-17099.htm)
