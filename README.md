@@ -23,7 +23,7 @@ Enfin, une librairie de synthèse vocale en anglais est utilisée pour un feedba
 * Téléchargement du logiciel [Processing.org](https://processing.org/download) 4.0
 * Importation de la librairie *[Video](https://github.com/processing/processing-video)* 
 `Sketch -> Importer une librairie... -> Ajouter une librairie...`
-* Les librairies [gson](https://github.com/google/gson). Normalement la librairie *[gson](https://github.com/google/gson)*, *[OpenCV](./tabgo/code/opencv_processing4.52.jar)* et *TTS* se trouvent dans le sous-dossier **code** et seront chargées automatiquement. Si cela ne fonctionne pas, glissez-déposez les fichiers *.jar* dans la fenêtre Processing lors de l'ouverture du programme.
+* Les librairies *[gson](https://github.com/google/gson)*, *[OpenCV](./tabgo/code/opencv_processing4.52.jar)* et *TTS* se trouvent dans le sous-dossier **code** et seront chargées automatiquement. Si cela ne fonctionne pas, glissez-déposez les fichiers *.jar* dans la fenêtre Processing lors de l'ouverture du programme.
 
 ## Exécution
 Après avoir appuyé sur *"lancer le programme Processing"* (bouton *"Play"*), vous pouvez scanner votre environnement de travail et commencer l'exécution du programme en appuyant sur la touche *"espace"*.
