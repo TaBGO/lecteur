@@ -160,7 +160,7 @@ import eu.upssitech.ttslib.*;
         fill(49,49,49);
         textSize(20);
         textFont(f);
-        text("Glissez- Déposez votre photographie du programme",10,20);
+        text("Glissez-Déposez votre photographie sur la fenêtre TaBGo",10,20);
         if (src != null)
           mae=FSM.CREATION;
         break;
