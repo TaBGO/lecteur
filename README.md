@@ -16,19 +16,21 @@ Le code disponible **[là](./tabgo)** a principalement été développé au trav
 D'autres voies sont actuellement explorées pour permettre une exécution complètement non-visuelle du code.
 
 ## Technologies utilisées
-Le logiciel utilise [processing.org](https://www.processing.org) et les librairies *[OpenCV](./tabgo/code/opencv_processing4.52.jar)* recompilé avec la version OpenCV 4.52, *[Video](https://github.com/processing/processing-video)* (pour la reconnaissance optique) et *[gson](https://github.com/google/gson)* (pour la création des fichiers **sb3**).
+Le logiciel utilise [processing.org](https://www.processing.org) et les librairies *[OpenCV](./tabgo/code/opencv_processing4.52.jar)* recompilé avec la version OpenCV 4.52, *[Video](https://github.com/processing/processing-video)* (pour la reconnaissance optique),  *[drop](http://transfluxus.github.io/drop)* (pour le Drag and Drop d'images) et *[gson](https://github.com/google/gson)* (pour la création des fichiers **sb3**).
 Enfin, une librairie de synthèse vocale en anglais est utilisée pour un feedback sonore (fournie directement).
 
 ## Installation (à n'effectuer qu'une fois)
 * Téléchargement du logiciel [Processing.org](https://processing.org/download) 4.0
 * Importation de la librairie *[Video](https://github.com/processing/processing-video)* 
 `Sketch -> Importer une librairie... -> Ajouter une librairie...`
-* Les librairies *[gson](https://github.com/google/gson)*, *[OpenCV](./tabgo/code/opencv_processing4.52.jar)* et *TTS* se trouvent dans le sous-dossier **code** et seront chargées automatiquement. Si cela ne fonctionne pas, glissez-déposez les fichiers *.jar* dans la fenêtre Processing lors de l'ouverture du programme.
+* Les librairies *[gson](https://github.com/google/gson)*, *[OpenCV](./tabgo/code/opencv_processing4.52.jar)*, *Drop* et *TTS* se trouvent dans le sous-dossier **code** et seront chargées automatiquement. Si cela ne fonctionne pas, glissez-déposez les fichiers *.jar* dans la fenêtre Processing lors de l'ouverture du programme.
 
 ## Exécution
 Après avoir appuyé sur *"lancer le programme Processing"* (bouton *"Play"*), vous pouvez scanner votre environnement de travail et commencer l'exécution du programme en appuyant sur la touche *"espace"*.
 
-Si vous voulez lancer un script de test, appuyez sur *"t*" ou "*T*". Les fichiers de tests (images **.png**) se trouvent dans le sous-dossier **data**. Modifiez le fichier à tester dans la classe "*tabgo.pde*", dans la méthode "*creation*".
+Si vous souhaitez effectuer la reconnaissance de code à partir d'une image, appuyez sur la touche *"i"* ou *"I"* et glissez-déposez votre image dans la fenêtre tabgo. Si vous voulez lancer un script de test, appuyez sur *"t*" ou "*T*".
+
+Les fichiers de tests (images **.png**) se trouvent dans le sous-dossier **data**. Modifiez le fichier à tester dans la classe "*tabgo.pde*", dans la méthode "*creation*".
 Le fichier **.sb3** obtenu se trouve dans le dossier "**data/sb3/Programme_scratch.sb3**" et peut ensuite être chargé et exécuté sur le site web [Scratch](https://scratch.mit.edu) : 
 
 `Bouton Créer puis menu  File -> Load from your computer`
