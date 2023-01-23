@@ -3,7 +3,7 @@
 ## Informations générales
 Le projet TaBGO a pour objectif de permettre à des personnes non-voyantes d'utiliser le langage de programmation [Scratch](https://scratch.mit.edu) par utilisation de blocs tangibles.
 
-Le lecteur TaBGO permet la reconnaissance des blocs tangibles grâce à des [TopCodes](https://github.com/truillet/TopCodes) ainsi que des [cubarithmes](https://magasin.avh.asso.fr/tous-les-articles/145-cubes-algebriques-par-100.html?search_query=cube+braille&results=51) et créer un fichier **sb3** directement exécutable par [Scratch](https://scratch.mit.edu).
+Le lecteur TaBGo permet la reconnaissance des blocs tangibles grâce à des [TopCodes](https://github.com/truillet/TopCodes) ainsi que des [cubarithmes](https://magasin.avh.asso.fr/tous-les-articles/145-cubes-algebriques-par-100.html?search_query=cube+braille&results=51) et créer un fichier **sb3** directement exécutable par [Scratch](https://scratch.mit.edu).
 
 <img src="./documentation/images/blocks.jpg" width=400 alt="différents prototypes">
 
@@ -20,7 +20,7 @@ Le logiciel utilise [processing.org](https://www.processing.org) et les librairi
 Enfin, une librairie de synthèse vocale en anglais est utilisée pour un feedback sonore (fournie directement).
 
 ## Installation (à n'effectuer qu'une fois)
-* Téléchargement du logiciel [Processing.org](https://processing.org/download) 4.0
+* Téléchargement du logiciel [Processing.org](https://processing.org/download) 4.1.2
 * Importation de la librairie *[Video](https://github.com/processing/processing-video)* 
 `Sketch -> Importer une librairie... -> Ajouter une librairie...`
 * Les librairies *[gson](https://github.com/google/gson)*, *[OpenCV](./tabgo/code/opencv_processing4.52.jar)*, *Drop* et *TTS* se trouvent dans le sous-dossier **code** et seront chargées automatiquement. Si cela ne fonctionne pas, glissez-déposez les fichiers *.jar* dans la fenêtre Processing lors de l'ouverture du programme.
