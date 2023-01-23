@@ -8,7 +8,7 @@
  *  - Amélioration de la détection des cubarithmes
  *  - Ajout du feedback audio
  *
- * Last Revision: 20/10/2022
+ * Last Revision: 23/01/2023
  * 
  *
  * utilise OpenCV 4.52 (12/10/20)
@@ -52,6 +52,9 @@
  * automatisation de la récupération de données (8/07/22)
  * modification doc et ajout fichier sur variables privées (18/07/22)
  * création de tests et explications (19/07/22)
+ 
+ * modification TTS (20/10/22)
+ * ajout drag and drop images (23/01/23)
  */
 
 // import librairies
@@ -60,6 +63,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+// Drag and drop capabilities
+import drop.*;
 
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.RotatedRect;
@@ -82,10 +87,12 @@ import eu.upssitech.ttslib.*;
   private Gson gson;
   private PFont f;
   
+  private SDrop drop;
   
   public enum FSM { 
       INITIAL, // Etat initial
       CREATION, // création de l'algorithme
+      DND, // drag and drop
     }     
 
   private FSM mae; // Finite State Machine
@@ -111,6 +118,8 @@ import eu.upssitech.ttslib.*;
     // all concerning font 
     f = loadFont("B612-Bold-20.vlw");
     
+    drop = new SDrop(this);
+    
     tts = new TTS();
     mae = FSM.INITIAL;
     indCam = 0;
@@ -129,20 +138,33 @@ import eu.upssitech.ttslib.*;
     switch (mae) {
       case INITIAL:
         image(cam,0,0); 
-        fill(0,0,0);
+        fill(49,49,49);
         textSize(20);
         textFont(f);
         text("Pour lancer l'exécution, appuyez sur la touche \" espace \"",10,20);
         text("Pour lancer un test, appuyez sur la touche \" T \"",10,40);
-        text("Pour changer de caméra, appuyez sur la touche \" C \"",10,60);
+        text("Pour un drag and drop, appuyez sur la touche \" I \"",10,60);
+        text("Pour changer de caméra, appuyez sur la touche \" C \"",10,80);
         affichage();
         break;
         
       case CREATION: // creation de l'algorithme  
+        text("Création du prgramme en cours ",10,100);
         creation(src);
         mae=FSM.INITIAL;
+        src = null;
         break;
       
+      case DND: // attente drag and drop
+        background(255);
+        fill(49,49,49);
+        textSize(20);
+        textFont(f);
+        text("Glissez- Déposez votre photographie du programme",10,20);
+        if (src != null)
+          mae=FSM.CREATION;
+        break;
+       
       default :
         break;
     }
@@ -156,7 +178,13 @@ import eu.upssitech.ttslib.*;
     // Temporaire 
     if (mae==FSM.INITIAL){
       switch (key) {
-       
+        // Drag and drop
+        case 'I':
+        case 'i':             
+            mae = FSM.DND;
+          break;
+          
+        
         // Pour lancer une image test
         case 'T':
         case 't':
@@ -169,7 +197,7 @@ import eu.upssitech.ttslib.*;
         // Pour changer de caméra
         case 'C':
         case 'c':
-          tts.speak("Changing camera");
+          tts.speak("Changing webcam");
           indCam++;
           cam.stop();
           if (listCams.length > 0){
@@ -270,7 +298,19 @@ import eu.upssitech.ttslib.*;
     }
   }
   
-
+void dropEvent(DropEvent theDropEvent) {
+  println("");
+  println("isFile()\t"+theDropEvent.isFile());
+  println("isImage()\t"+theDropEvent.isImage());
+  println("isURL()\t"+theDropEvent.isURL());
+  
+  // if the dropped object is an image, then 
+  // load the image into our PImage.
+  if(theDropEvent.isImage()) {
+    println("### loading image ...");
+    src = theDropEvent.loadImage();
+  }
+}
   
   
   
