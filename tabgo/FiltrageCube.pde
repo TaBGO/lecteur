@@ -14,8 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import org.opencv.core.RotatedRect;
 
-public class FiltrageCubes {
-  
+public class FiltrageCubes {  
   private float gammaCoeff; //Paramètre représentant le gamma de l'image
      
   public float getGammaCoeff() {

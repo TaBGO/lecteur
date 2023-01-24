@@ -8,7 +8,7 @@
  *  - Amélioration de la détection des cubarithmes
  *  - Ajout du feedback audio
  *
- * Last Revision: 23/01/2023
+ * Last Revision: 24/01/2023
  * 
  *
  * utilise OpenCV 4.52 (12/10/20)
@@ -54,7 +54,7 @@
  * création de tests et explications (19/07/22)
  
  * modification TTS (20/10/22)
- * ajout drag and drop images (23/01/23)
+ * ajout drag and drop images (23/01/23) et corrections (24/01/23)
  */
 
 // import librairies
@@ -105,9 +105,11 @@ import eu.upssitech.ttslib.*;
   private int indCam;
   private String[] listCams;
   
+  // boolean to allow automatic added code for accessibility (false by default)
+  private boolean addCodeAccessibility = false;
   
   public void settings() {
-    size(640,480);
+    size(800,600);
   }
   
   public void setup() {    
@@ -125,10 +127,10 @@ import eu.upssitech.ttslib.*;
     indCam = 0;
     listCams = Capture.list();
     try {
-      cam = new Capture(this,listCams[0]);
+      cam = new Capture(this,800,600, listCams[0]);
     }
     catch (ArrayIndexOutOfBoundsException aiobe) {
-      cam = new Capture(this, "pipeline:autovideosrc"); // essaye la caméra interne
+      cam = new Capture(this, 800,600, "pipeline:autovideosrc"); // essaye la caméra interne
     }
     cam.start();
     
@@ -237,10 +239,12 @@ import eu.upssitech.ttslib.*;
      maDetect = new DetectionCube(src);
      println("Nombre de cubes trouvés : " + maDetect.getListCubes().size());
   
-    if (!ts.codes.isEmpty()){
-      Automatique auto = new Automatique();
-      auto.traite(ts, maDetect);
-    }  
+    // *** ajout du code supplémentaire (option à activer) ***
+    if (addCodeAccessibility)
+      if (!ts.codes.isEmpty()){
+        Automatique auto = new Automatique();
+        auto.traite(ts, maDetect);
+      }  
    
     // Construire l'algorithme 
     println("__CONSTRUCTION DE L'ALGORITHME__");
@@ -272,7 +276,6 @@ import eu.upssitech.ttslib.*;
     fe.fileE(json,tts);  
   }
 
-
   // Affichage des résultats
   public void affichage() {
     destination = cam.copy();
@@ -299,17 +302,18 @@ import eu.upssitech.ttslib.*;
   }
   
 void dropEvent(DropEvent theDropEvent) {
-  println("");
-  println("isFile()\t"+theDropEvent.isFile());
-  println("isImage()\t"+theDropEvent.isImage());
-  println("isURL()\t"+theDropEvent.isURL());
-  
-  // if the dropped object is an image, then 
-  // load the image into our PImage.
+  // println("\nisFile()\t"+theDropEvent.isFile());
+  // println("isImage()\t"+theDropEvent.isImage());
+  // println("isURL()\t"+theDropEvent.isURL());  
+  // if the dropped object is an image, then load the image into our PImage
   if(theDropEvent.isImage()) {
-    println("### loading image ...");
-    src = theDropEvent.loadImage();
+    // println("### loading image ...");
+    // println("Where: " + theDropEvent.filePath());
+    src = loadImage(theDropEvent.filePath());
+    // println("### image loaded ... Taille : " + src.width + " " + src.height);
   }
+  else 
+    src = null;
 }
   
   
