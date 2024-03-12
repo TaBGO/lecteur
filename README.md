@@ -20,7 +20,7 @@ Le logiciel utilise [processing.org](https://www.processing.org) et les librairi
 Enfin, une librairie de synthèse vocale en anglais est utilisée pour un feedback sonore (fournie directement).
 
 ## Installation (à n'effectuer qu'une fois)
-* Téléchargement du logiciel [Processing.org](https://processing.org/download) 4.1.2
+* Téléchargement du logiciel [Processing.org](https://processing.org/download) 4.3
 * Importation de la librairie *[Video](https://github.com/processing/processing-video)* 
 `Sketch -> Importer une librairie... -> Ajouter une librairie...`
 * Les librairies *[gson](https://github.com/google/gson)*, *[OpenCV](./tabgo/code/opencv_processing4.52.jar)*, *Drop* et *TTS* se trouvent dans le sous-dossier **code** et seront chargées automatiquement. Si cela ne fonctionne pas, glissez-déposez les fichiers *.jar* dans la fenêtre Processing lors de l'ouverture du programme.
