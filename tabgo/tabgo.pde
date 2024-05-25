@@ -80,6 +80,8 @@ import processing.video.*;
 
 import eu.upssitech.ttslib.*;
 
+import fr.dgac.ivy.*;
+
 // variables
   private PImage src, destination;
   private Capture cam;
@@ -88,6 +90,8 @@ import eu.upssitech.ttslib.*;
   private PFont f;
   
   private SDrop drop;
+  
+  private Ivy bus;
   
   public enum FSM { 
       INITIAL, // Etat initial
@@ -132,6 +136,11 @@ import eu.upssitech.ttslib.*;
     catch (ArrayIndexOutOfBoundsException aiobe) {
       cam = new Capture(this, 800,600, "pipeline:autovideosrc"); // essaye la caméra interne
     }
+    try {
+      bus = new Ivy("Tabgo", " Tabgo is ready", null);
+      bus.start("127.255.255.255:2010");
+      }
+    catch (IvyException ie) {}   
     cam.start();
     
   }
@@ -155,6 +164,10 @@ import eu.upssitech.ttslib.*;
         creation(src);
         mae=FSM.INITIAL;
         src = null;
+        try {
+          bus.sendMsg("tabgo: sb3 created...");
+        }
+        catch (IvyException ie) {}
         break;
       
       case DND: // attente drag and drop
