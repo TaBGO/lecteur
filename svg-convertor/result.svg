@@ -1,7 +1,13 @@
 <?xml version="1.0"?>
 
 <svg viewBox="0 0 550 425" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
-  <g transform="translate(0,0) rotate(0)" fill="none"  stroke-width="1">
-    <path stroke = "black" d="M 275.0,212.5 M 75.0,212.5 l 0.0,-50.0 l 35.35533905932738,-35.35533905932738 l 35.35533905932738,35.35533905932738 l 0.0,50.0 l 20.0,-0.0 l 0.0,-50.0 l 35.35533905932738,-35.35533905932738 l 35.35533905932738,35.35533905932738 l 0.0,50.0 l 20.0,-0.0 l 0.0,-50.0 l 35.35533905932738,-35.35533905932738 l 35.35533905932738,35.35533905932738 l 0.0,50.0 l 20.0,-0.0 "/>    
+  <g transform="translate(0,0) rotate(0)" fill="none"  stroke-width="14">
+    <path stroke = "black" d="M 275.0,212.5 "/>
+    <path stroke = "red" d= "M 275.0,212.5 l 14.0,-0.0 "/>
+    <path stroke = "blue" d= "M 289.0,212.5 l 14.0,-0.0 "/>
+    <path stroke = "black" d= "M 303.0,212.5 l 72.0,-0.0 "/>
+    <path stroke = "red" d= "M 375.0,212.5 l -14.0,-0.0 "/>
+    <path stroke = "blue" d= "M 361.0,212.5 l -14.0,-0.0 "/>
+    <path stroke = "black" d= "M 375.0,212.5 "/>    
   </g>
 </svg>
