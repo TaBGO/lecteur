@@ -28,17 +28,23 @@ isNewMovement = False
 hasMoved = False
 
 def rightBloc(bloc):
+    """Indicate whether the given bloc is known by the convertor or not"""
     opcode = bloc.opcode
     return opcode in ["motion_movesteps", "motion_turnright", "motion_turnleft", "motion_gotoxy", "motion_pointindirection", "control_repeat", "pen_clear",
                      "motion_changeyby", "motion_changexby", "motion_setx", "motion_sety", "control_repeat_until", "data_setvariableto", "data_changevariableby",
-                      "control_if", "control_if_else" ]
+                      "control_if", "control_if_else", "procedures_call" ]
 
 
 def generateLine(lettre, x, y):
+    """return a string representing a movement in the svg, defined by the letter and the two coordinates x and y"""
     return lettre + " " + str(x) + "," + str(y) + " "
 
 
 def moveCase(dico, bloc, orientation):
+    """Case movement : motion_movesteps / motion_changeyby / motion_changexby
+    
+       perform the movement and return the lines that needs to be added to the svg 
+    """
     global orientationLastMovement
     global isNewMovement
     global hasMoved
@@ -66,6 +72,10 @@ def moveCase(dico, bloc, orientation):
 
 
 def set_X(dico, bloc):
+    """Case movement : motion_setx
+        
+       perform the movement and return the lines that needs to be added to the svg 
+    """
     global orientationLastMovement
     global isNewMovement
     global hasMoved
@@ -88,6 +98,10 @@ def set_X(dico, bloc):
         return generateLine("M", x, coordinates[1])
 
 def set_Y(dico, bloc):
+    """Case movement : motion_sety
+        
+       perform the movement and return the lines that needs to be added to the svg 
+    """
     global orientationLastMovement
     global isNewMovement
     global hasMoved
@@ -110,6 +124,10 @@ def set_Y(dico, bloc):
 
 
 def goTo_X_Y(dico, bloc):
+    """Case movement : motion_gotoxy
+        
+       perform the movement and return the lines that needs to be added to the svg 
+    """
     global orientationLastMovement
     global isNewMovement
     global hasMoved
@@ -134,11 +152,12 @@ def goTo_X_Y(dico, bloc):
         return generateLine("M", x, y)
 
 
-def modifyOrientation(dico, bloc, droite):
+def modifyOrientation(dico, bloc, right):
+    """modify the orientation """
     global orientation
 
     degree = getValue(dico, bloc, 0)
-    if(droite):
+    if(right):
         orientation -= degree
     else:
         orientation += degree
@@ -287,6 +306,8 @@ def blockAnalysis(dico, bloc : Bloc):
                 return addedLines + controlIfElse(dico, bloc)
             case "control_if":
                 return addedLines + controlIf(dico, bloc)
+            case "procedures_call":
+                return addedLines + sequenceLoop(dico, dico[dico[bloc.inputs[0]].parent])
             case "data_setvariableto":
                 variables.update([(bloc.fields[0], getValue(dico, bloc, 0))])
             case "data_changevariableby":

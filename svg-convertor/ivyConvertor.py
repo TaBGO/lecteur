@@ -37,8 +37,8 @@ def on_given(agent, text):
 
 IvyBindMsg(on_tabgo, "^tabgo: .*")
 IvyBindMsg(on_tabgo_printable, "^print tabgo: .*")
-IvyBindMsg(on_given, "^convert: .*")
-IvyBindMsg(print_given, "^print convert: .*")
+IvyBindMsg(on_given, "^convert:(.*?)location=.*")
+IvyBindMsg(print_given, "^print .* convert:(.*?)location=.*")
 
 IvyMainLoop()
 
