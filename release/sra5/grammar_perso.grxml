@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE grammar PUBLIC "-//W3C//DTD GRAMMAR 1.0//EN"
+                "grammar.dtd">
+<!-- the default grammar language is FR  -->
+<grammar  version="1.0"
+          mode ="voice"
+          xmlns="http://www.w3.org/2001/06/grammar"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.w3.org/2001/06/grammar
+                              grammar.xsd"
+          xml:lang="fr-FR" root="tabgo" tag-format="semantics/1.0">
+          
+   <rule id="tabgo" scope="public"> 
+    <ruleref special="GARBAGE" /> 
+    <one-of>
+      <item> test <tag>out="action=test";</tag></item>
+      <item> execution <tag>out="action=execution";</tag></item>
+      <item> camera <tag>out="action=camera";</tag></item>
+      <item> image <tag>out="action=image";</tag></item>
+      <item> changer <tag>out="action=changer";</tag></item>
+    </one-of>
+    <ruleref special="GARBAGE" />
+  </rule>
+      
+</grammar>
