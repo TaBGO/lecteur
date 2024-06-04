@@ -366,7 +366,7 @@ import fr.dgac.ivy.*;
     println("Nombre de blocks : " + listBlocks.size());
 
     /* Affichage des blocks : Numéro : opcode, inputs, fields, next, parent, mutation
-     * À décommenter pour l'affichage
+     * À décommenter pour l'affichage */
 
     int i = 0;
     for ( Blocks bl : listBlocks){
@@ -378,7 +378,6 @@ import fr.dgac.ivy.*;
       }
       i++;
     }
-    */
 
     //Génération du JSON
     println("__GENERATION DU JSON__");

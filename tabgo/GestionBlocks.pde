@@ -663,14 +663,76 @@ public class GestionBlocks {
   */
   public boolean isDataList(int code) {
     switch(code) {
-    case 457:
-    case 465:
-    case 551:
-    case 555:
-    case 563:
+    case 457:case 465:case 551:case 555:case 563:
       return true;
     default:
       return false;
     }
   }
 }
+
+  public int getNombreVariableTopCode(TopCode code){
+    switch(code.getCode()) {
+      case 61:case 87:case 155:case 157:case 167:case 171:case 179:case 181:case 185:case 199:case 283:
+        return 1;
+      case 115:case 173:case 339:
+        return 2;
+      default:
+        return 0;
+    }
+  }
+  
+  public Object getValeurDefautTopCode1(TopCode code){
+    switch(code.getCode()){
+      case 61:case 155:case 179:case 185:
+        return 10;
+      case 87:
+        return 1;
+      case 157:
+      case 167:
+        return 15;
+      case 171:
+        return 90;
+      case 181:case 199:
+        return 0;
+      case 283:
+        return "Quel est ton nom ?";
+      default:
+        return -1;
+    }
+  }
+  
+  public Object[] getValeurDefautTopCode2(TopCode code){
+    switch(code.getCode()){
+      case 173:
+        Object[] numbers173 = {0,0};
+        return numbers173;
+      case 115:
+        Object[] text115 = {"Bonjour !",2};
+        return text115;
+      case 339:
+        Object[] numbers339 = {1,10};
+        return numbers339;
+      default:
+        return null;
+    }
+  }
+  
+  public boolean haveOnlyNumberVariable(TopCode code){
+    switch(code.getCode()){
+      case 61:case 87:case 155:case 167:case 171:case 173:case 179:case 181:case 185:case 199:
+        return true;
+      default:
+        return false;
+    }
+  }
+  
+  //la liste des TopCode inserable dans un autre top code, comme par exemple ... + ...
+  public boolean TopCodeInserable(TopCode code){
+    switch(code.getCode()){
+      case 285:case 295:case 299:case 301 :case 339:case 341:case 355:
+        return true;
+      default:
+        return false;
+    }
+  }
