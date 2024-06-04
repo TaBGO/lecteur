@@ -74,7 +74,7 @@ public class BlockCustoms extends Blocks{
     b.mutation.put("argumentids","[]");
     b.mutation.put("argumentnames","[]");
     b.mutation.put("argumentdefaults","[]");
-    b.mutation.put("warp",false);
+    b.mutation.put("warp","false");
     return b;
   }
  

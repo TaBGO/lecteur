@@ -140,6 +140,12 @@ public class FiltrageCubes {
          if(estSuperieur(code, cube)){
            switch(code.getCode()){
            case 31:
+           case 213:
+             topLevel = true;
+           case 217:
+             topLevel = true;
+           case 227:
+             topLevel = true;
            case 47:
              topLevel = true;
              break;
@@ -208,6 +214,12 @@ public class FiltrageCubes {
          println("code : " + code.getCode());
          switch(code.getCode()){
          case 31:
+         case 213:
+             topLevel = true;
+         case 217:
+             topLevel = true;
+         case 227:
+             topLevel = true;
          case 47:
            topLevel = true;
            break;
