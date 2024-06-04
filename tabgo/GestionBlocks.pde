@@ -330,7 +330,6 @@ public class GestionBlocks {
           
         } else {
           Blocks der = list.get(prev);
-          System.out.println("prev2 = " + der.getOpcode());
           int ancien = prev;
           while(!canHaveNext(der)){
             ancien--;
@@ -347,7 +346,6 @@ public class GestionBlocks {
           } else {
             der = list.get(prev);
             if (ancien >= 0){
-              System.out.println("met bloc =  " + ancien);
               blockToAdd.setParent("bloc"+ancien);
             }
           }
