@@ -237,9 +237,9 @@ public class DetectionCube {
      * @return true si la couleur au pixel[loc] de l'image monImage est proche de la couleurCible, false sinon
      */
   boolean isNearCouleur(color couleurCible, int loc, PImage monImage) {
-    boolean redTest = abs(red(couleurCible) - red(monImage.pixels[loc])) <20;
-    boolean greenTest = abs(green(couleurCible) - green(monImage.pixels[loc])) <20;
-    boolean blueTest = abs(blue(couleurCible) - blue(monImage.pixels[loc])) <20;
+    boolean redTest = abs(red(couleurCible) - red(monImage.pixels[loc])) <10;
+    boolean greenTest = abs(green(couleurCible) - green(monImage.pixels[loc])) <10;
+    boolean blueTest = abs(blue(couleurCible) - blue(monImage.pixels[loc])) <10;
 
     return redTest && greenTest && blueTest;
   }

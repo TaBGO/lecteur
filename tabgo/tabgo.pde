@@ -95,8 +95,6 @@ import fr.dgac.ivy.*;
 
   private SDrop drop;
 
-  private Ivy bus;
-
   public enum FSM {
       INITIAL, // Etat initial
       CREATION, // création de l'algorithme
@@ -384,7 +382,7 @@ import fr.dgac.ivy.*;
     String json = gson.toJson(new MainScratch(listBlocks));
     // File Execution pour créer le fichier
     fe = new FileExecution();
-    fe.fileE(json,bus);
+    fe.fileE(json,tts);
   }
 
   // Affichage des résultats

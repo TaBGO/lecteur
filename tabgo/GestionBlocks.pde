@@ -149,7 +149,7 @@ public class GestionBlocks {
         /* Block Prototype */
         BlockCustoms proto = new BlockCustoms("data_quart"); // Opcode temporaire
         proto = proto.protoBlock(code.getCode());
-        proto.parent = "block"+--current;
+        proto.parent = "bloc"+--current;
         current++;
         list.add(proto);
         
@@ -250,7 +250,7 @@ public class GestionBlocks {
           /* Block Prototype */
           BlockCustoms proto = new BlockCustoms("data_quart"); // Opcode temporaire
           proto = proto.protoBlock(code.getCode());
-          proto.parent = "block"+ --current;
+          proto.parent = "bloc"+ --current;
           current++;
           list.add(proto);
           
