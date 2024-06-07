@@ -149,15 +149,16 @@ public class GestionBlocks {
         /* Block Prototype */
         BlockCustoms proto = new BlockCustoms("data_quart"); // Opcode temporaire
         proto = proto.protoBlock(code.getCode());
-        proto.parent = "block"+--current;
+        proto.parent = "bloc"+--current;
         current++;
         list.add(proto);
-        
+         blockToAdd.setTopLevel(topLevel);
       } else {
         /* Appel de block custom*/
         BlockCustoms blockcall = new BlockCustoms("data_quart"); // Opcode temporaire
         blockcall = blockcall.protoBlock(code.getCode());
-        blockcall.setOpcode("procedures_call");          
+        blockcall.setOpcode("procedures_call");      
+        blockcall.shadow = false;
         blockcall.x = floor(code.getCenterX());
         blockcall.y = floor(code.getCenterY());
         Blocks der = list.get(prev);
@@ -217,6 +218,7 @@ public class GestionBlocks {
       } else {
         addBlock(list, code, topLevel, current, prev, parent);
       }
+      
   }
   
   /*
@@ -250,24 +252,26 @@ public class GestionBlocks {
           /* Block Prototype */
           BlockCustoms proto = new BlockCustoms("data_quart"); // Opcode temporaire
           proto = proto.protoBlock(code.getCode());
-          proto.parent = "block"+ --current;
+          proto.parent = "bloc"+ --current;
           current++;
           list.add(proto);
-          
+           blockToAdd.setTopLevel(topLevel);
         } else {
           /* Appel de block custom*/
           BlockCustoms blockcall = new BlockCustoms("data_quart"); // Opcode temporaire
           blockcall = blockcall.protoBlock(code.getCode());
+          blockcall.shadow = false;
           blockcall.setOpcode("procedures_call");
           blockcall.x = floor(code.getCenterX());
           blockcall.y = floor(code.getCenterY());
           Blocks der = list.get(prev);
+
           int ancien = prev;
           while(!canHaveNext(der)){
             ancien--;
             der = list.get(ancien);
           }  
-          list.get(ancien).setNext("bloc"+current);
+          
                   
           if ((list.get(prev).inputs != null) &&  (blockcall.opcode.contains("operator"))){
             blockcall.setParent("bloc"+parent);
@@ -285,6 +289,26 @@ public class GestionBlocks {
           blockcall.mutation.remove("argumentnames");
           blockcall.mutation.remove("argumentdefaults");
           list.add(blockcall);
+           champ = list.get(parent).hasInput();
+        if(!champ.equals("")) {
+          listToAdd = new ArrayList<Object>();
+          if(hasShadow(champ)) {
+            listToAdd.add(3);
+            listToAdd.add("bloc"+current);
+            tmp = new ArrayList<Object>();
+            tmp.add(10);
+            tmp.add("");
+            listToAdd.add(tmp);
+           } else {
+            listToAdd.add(2);
+            listToAdd.add("bloc"+current);
+           }
+          list.get(parent).getInputs().put(champ, listToAdd);
+          blockToAdd.parent = "bloc"+parent;
+        }
+        else{
+          list.get(ancien).setNext("bloc"+current);
+        }
         }
       } else {
         champ = list.get(parent).hasInput();
@@ -321,12 +345,7 @@ public class GestionBlocks {
             blockToAdd.setParent("bloc"+parent);
           } else {
             der = list.get(prev);
-            ancien = prev - 1;
-            while (ancien >= 0 && (!der.opcode.contains("control_if") && !der.opcode.contains("control_repeat") && !der.opcode.contains("control_forever"))){ // A Modifier : on remonte jusqu'au dernier controle, à vérifier si ce n'est pas un controle déjà finit, alors remonter encore plus loin
-              der = list.get(ancien);
-              ancien--;
-            }
-            if (ancien++ >= 0){
+            if (ancien >= 0){
               blockToAdd.setParent("bloc"+ancien);
             }
           }
@@ -663,14 +682,76 @@ public class GestionBlocks {
   */
   public boolean isDataList(int code) {
     switch(code) {
-    case 457:
-    case 465:
-    case 551:
-    case 555:
-    case 563:
+    case 457:case 465:case 551:case 555:case 563:
       return true;
     default:
       return false;
     }
   }
 }
+
+  public int getNombreVariableTopCode(TopCode code){
+    switch(code.getCode()) {
+      case 61:case 87:case 155:case 157:case 167:case 171:case 179:case 181:case 185:case 199:case 283:
+        return 1;
+      case 115:case 173:case 339:
+        return 2;
+      default:
+        return 0;
+    }
+  }
+  
+  public Object getValeurDefautTopCode1(TopCode code){
+    switch(code.getCode()){
+      case 61:case 155:case 179:case 185:
+        return 10;
+      case 87:
+        return 1;
+      case 157:
+      case 167:
+        return 15;
+      case 171:
+        return 90;
+      case 181:case 199:
+        return 0;
+      case 283:
+        return "Quel est ton nom ?";
+      default:
+        return -1;
+    }
+  }
+  
+  public Object[] getValeurDefautTopCode2(TopCode code){
+    switch(code.getCode()){
+      case 173:
+        Object[] numbers173 = {0,0};
+        return numbers173;
+      case 115:
+        Object[] text115 = {"Bonjour !",2};
+        return text115;
+      case 339:
+        Object[] numbers339 = {1,10};
+        return numbers339;
+      default:
+        return null;
+    }
+  }
+  
+  public boolean haveOnlyNumberVariable(TopCode code){
+    switch(code.getCode()){
+      case 61:case 87:case 155:case 167:case 171:case 173:case 179:case 181:case 185:case 199:
+        return true;
+      default:
+        return false;
+    }
+  }
+  
+  //la liste des TopCode inserable dans un autre top code, comme par exemple ... + ...
+  public boolean TopCodeInserable(TopCode code){
+    switch(code.getCode()){
+      case 285:case 295:case 299:case 301 :case 339:case 341:case 355:
+        return true;
+      default:
+        return false;
+    }
+  }

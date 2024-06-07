@@ -8,7 +8,7 @@
 class Braille {
 
   Map<String, Character> dicoBraille;
-  float seuil = 0.98;
+  float seuil = 0.80;
 
 
   Braille() {
@@ -33,6 +33,7 @@ class Braille {
     dico.put("111101", '7');
     dico.put("101101", '8');
     dico.put("011001", '9');
+    dico.put("001100", '-');
 
     dico.put("100000", 'a');
     dico.put("101000", 'b');

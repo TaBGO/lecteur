@@ -89,7 +89,7 @@ class Point {
   boolean isNear(PixelScore monPixel) {
     boolean trouve = false;
     for (PixelScore pixel : mesPixels) {
-      if (dist(pixel.x, pixel.y,monPixel.x, monPixel.y) < 25) {
+      if (dist(pixel.x, pixel.y,monPixel.x, monPixel.y) < 20) {
         trouve = true;
         break;
       }

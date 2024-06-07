@@ -17,7 +17,7 @@ import java.util.Map;
 
 
 class Cube {
-  int seuilBrightness = 180;  
+  int seuilBrightness = 150;  
 
   PVector p1, p2, p3, p4;
 

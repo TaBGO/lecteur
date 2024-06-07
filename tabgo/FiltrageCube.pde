@@ -121,8 +121,10 @@ public class FiltrageCubes {
   public List<Blocks> construitAlgorithme(List<TopCode> tc, List<Cube> lcubes, GestionBlocks g){
     int i = 0;
     int j = 0;
+    boolean cubarithmeDejaAjoute = false;
     int prev = 0;
     int cur = 0;
+    String cubeValue="";
     
     List<Blocks> listBlocks = new LinkedList <Blocks>();
     Deque<Integer> parents = new ArrayDeque<Integer>();
@@ -132,12 +134,18 @@ public class FiltrageCubes {
     Cube cube;
     
     while (i<tc.size()) {
-      code = tc.get(i);
+      code = tc.get(i);   
        if(j < lcubes.size()){
          cube = lcubes.get(j);
          if(estSuperieur(code, cube)){
            switch(code.getCode()){
            case 31:
+           case 213:
+             topLevel = true;
+           case 217:
+             topLevel = true;
+           case 227:
+             topLevel = true;
            case 47:
              topLevel = true;
              break;
@@ -146,6 +154,11 @@ public class FiltrageCubes {
            }
 
            println("code : " + code.getCode()); 
+           if(cubarithmeDejaAjoute==true && j>0){
+             addCubarithme(g, prev, listBlocks, parents, cubeValue);
+             cubeValue="";
+             cubarithmeDejaAjoute=false;
+           }
            if(g.isStopBlock(code.getCode())) {
              prev = parents.removeFirst();
            } else if (g.isElseBlock(code.getCode())){
@@ -156,19 +169,57 @@ public class FiltrageCubes {
              cur = g.isVariable(code.getCode()) ? cur : cur + 1;
              cur = g.isDefinition(code.getCode()) ? cur + 1 : cur;
            }
+           if(i+1<tc.size()){
+             if(estSuperieur(tc.get(i+1),cube) && getNombreVariableTopCode(code) == 1 && !g.isVariable(tc.get(i+1).getCode())){
+                 println("cube par défaut : " + getValeurDefautTopCode1(code));
+                 addCubarithme(g, prev, listBlocks, parents, String.valueOf(getValeurDefautTopCode1(code)));
+             }
+             if(estSuperieur(tc.get(i+1),cube) && getNombreVariableTopCode(code) == 2 && !g.isVariable(tc.get(i+1).getCode())){
+                 Object[] numbers = getValeurDefautTopCode2(code);
+                 if(numbers != null && numbers.length == 2){
+                     if(numbers[0] instanceof Integer && numbers[1] instanceof Integer){
+                       int number1 = (int) numbers[0];
+                       int number2 = (int) numbers[1];
+                       println("cube par défaut : " + number1);
+                       println("cube par défaut : " + number2);
+                       addCubarithme(g, prev, listBlocks, parents, String.valueOf(number1));
+                       addCubarithme(g, prev, listBlocks, parents, String.valueOf(number2));
+                     }if(numbers[0] instanceof String && numbers[1] instanceof Integer){
+                        String number1 = (String) numbers[0];
+                        int number2 = (int) numbers[1];
+                        println("cube par défaut : " + number1);
+                        println("cube par défaut : " + number2);
+                        addCubarithme(g, prev, listBlocks, parents, number1);
+                        addCubarithme(g, prev, listBlocks, parents, String.valueOf(number2));
+                     }
+                 }
+             }
+           }
            i++;
          } 
          else {
            println("cube : " + cube.getValue());
-           addCubarithme(g, prev, listBlocks, parents, String.valueOf(cube.getValue()));
-            j++;
+           cubeValue = cubeValue + cube.getValue();
+           cubarithmeDejaAjoute = true;
+           j++;
          } 
          
        } 
        else {
+         if(cubarithmeDejaAjoute==true && j>0){
+             addCubarithme(g, prev, listBlocks, parents, cubeValue);
+             cubeValue="";
+             cubarithmeDejaAjoute=false;
+           }
          println("code : " + code.getCode());
          switch(code.getCode()){
          case 31:
+         case 213:
+             topLevel = true;
+         case 217:
+             topLevel = true;
+         case 227:
+             topLevel = true;
          case 47:
            topLevel = true;
            break;
@@ -185,16 +236,50 @@ public class FiltrageCubes {
            cur = g.isVariable(code.getCode()) ? cur : cur + 1;
            cur = g.isDefinition(code.getCode()) ? cur+1 : cur;
          }
+         if(getNombreVariableTopCode(code) == 1){
+           if(i+1<tc.size()){
+             if(TopCodeInserable(tc.get(i+1))){  
+             }
+           }
+           println("cube par défaut : " + getValeurDefautTopCode1(code));
+           addCubarithme(g, prev, listBlocks, parents, String.valueOf(getValeurDefautTopCode1(code)));
+         }
+         if(getNombreVariableTopCode(code) == 2){
+           Object[] numbers = getValeurDefautTopCode2(code);
+           if(numbers != null && numbers.length == 2){
+             if(numbers[0] instanceof Integer && numbers[1] instanceof Integer){
+                int number1 = (int) numbers[0];
+                int number2 = (int) numbers[1];
+                println("cube par défaut : " + number1);
+                println("cube par défaut : " + number2);
+                addCubarithme(g, prev, listBlocks, parents, String.valueOf(number1));
+                addCubarithme(g, prev, listBlocks, parents, String.valueOf(number2));
+             }if(numbers[0] instanceof String && numbers[1] instanceof Integer){
+                String number1 = (String) numbers[0];
+                int number2 = (int) numbers[1];
+                println("cube par défaut : " + number1);
+                println("cube par défaut : " + number2);
+                addCubarithme(g, prev, listBlocks, parents, number1);
+                addCubarithme(g, prev, listBlocks, parents, String.valueOf(number2));
+             }
+           }
+         }
          i++;
        }   
     }
-    
+    cubeValue = "";
+    boolean cubeRestant = false;
     while (j < lcubes.size()){
+      cubeRestant = true;
       cube = lcubes.get(j);
-      println("chaine : " + String.valueOf(cube.getValue()));
-      g.ajoutCubarithme(listBlocks, String.valueOf(cube.getValue()),prev);
+      println("cube : " + cube.getValue());
+      cubeValue = cubeValue + cube.getValue();
       j++;
-    } 
+    }
+    
+    if(cubeRestant){
+      addCubarithme(g, prev, listBlocks, parents, String.valueOf(cubeValue));
+    }
     return listBlocks;  
   }  
   
