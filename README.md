@@ -9,7 +9,7 @@ Le lecteur TaBGo permet la reconnaissance des blocs tangibles grâce à des [Top
 
 Vous pouvez consulter la documentation pour construire vos blocs au format **[docx](./documentation/TaBGO_blocs_Scratch.docx)** ou **[pdf](./documentation/TaBGO_blocs_Scratch.pdf)**
 
-Des exemples d'algorithmes sont disponibles *ici* (*à venir*)
+Des exemples d'algorithmes sont disponibles [**ici**](https://github.com/TaBGO/lecteur/tree/main/documentation/exemples)
 
 Le code disponible **[là](./tabgo)** a principalement été développé au travers de plusieurs projets de fin d'étude : Jean-Baptiste Marco dans sa première mouture en java (stage de 2A ISAE-ENSMA) en 2018, Léa Berquez (stage de L3 Informatique - UT3) en 2020, un pool de 10 étudiants de L3 informatique (TER - UT3) en 2021 et Mathieu Campan (stage de 1A ENSEEIHT) en 2022 et {Ninon Autefage, Noémie Guiraud, Adrian Morellato et Loan Vigouroux (BE de Lience Informatique - UT3)} en 2024.  
 
