@@ -19,11 +19,15 @@ D'autres voies sont actuellement explorées pour permettre une exécution compl�
 Le logiciel utilise [processing.org](https://www.processing.org) et les librairies *[OpenCV](./tabgo/code/opencv_processing4.52.jar)* recompilé avec la version OpenCV 4.52, *[Video](https://github.com/processing/processing-video)* (pour la reconnaissance optique),  *[drop](http://transfluxus.github.io/drop)* (pour le Drag and Drop d'images) et *[gson](https://github.com/google/gson)* (pour la création des fichiers **sb3**).
 Enfin, une librairie de synthèse vocale en anglais est utilisée pour un feedback sonore (fournie directement).
 
-## Installation (à n'effectuer qu'une fois)
+## Installation 
+### installation manuelle (à n'effectuer qu'une fois)
 * Téléchargement du logiciel [Processing.org](https://processing.org/download) 4.3
 * Importation de la librairie *[Video](https://github.com/processing/processing-video)* 
 `Sketch -> Importer une librairie... -> Ajouter une librairie...`
 * Les librairies *[gson](https://github.com/google/gson)*, *[OpenCV](./tabgo/code/opencv_processing4.52.jar)*, *Drop* et *TTS* se trouvent dans le sous-dossier **code** et seront chargées automatiquement. Si cela ne fonctionne pas, glissez-déposez les fichiers *.jar* dans la fenêtre Processing lors de l'ouverture du programme.
+
+### installation automatique
+Des scripts pour windows et linux ont été écrits afin d'automatiser l'installation et l'exécution de TabGO (**bientôt**)
 
 ## Exécution
 Après avoir appuyé sur *"lancer le programme Processing"* (bouton *"Play"*), vous pouvez scanner votre environnement de travail et commencer l'exécution du programme en appuyant sur la touche *"espace"*.
