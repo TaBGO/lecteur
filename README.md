@@ -5,7 +5,7 @@ Le projet TaBGO a pour objectif de permettre à des personnes non-voyantes d'uti
 
 Le lecteur TaBGo permet la reconnaissance des blocs tangibles grâce à des [TopCodes](https://github.com/truillet/TopCodes) ainsi que des [cubarithmes](https://magasin.avh.asso.fr/tous-les-articles/145-cubes-algebriques-par-100.html?search_query=cube+braille&results=51) et créer un fichier **sb3** directement exécutable par [Scratch](https://scratch.mit.edu).
 
-<img src="./documentation/images/blocks.jpg" width=400 alt="différents prototypes">
+<img src="./documentation/images/valise.jpg" width=400 alt="la valise de blocs">
 
 Vous pouvez consulter la documentation pour construire vos blocs au format **[docx](./documentation/TaBGO_blocs_Scratch.docx)** ou **[pdf](./documentation/TaBGO_blocs_Scratch.pdf)**
 
