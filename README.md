@@ -11,7 +11,7 @@ Vous pouvez consulter la documentation pour construire vos blocs au format **[do
 
 Des exemples d'algorithmes sont disponibles *ici* (*à venir*)
 
-Le code disponible **[là](./tabgo)** a principalement été développé au travers de plusieurs projets de fin d'étude : Jean-Baptiste Marco dans sa première mouture en java (stage de 2A ISAE-ENSMA) en 2018, Léa Berquez (stage de L3 Informatique - UT3) en 2020, un pool de 10 étudiants de L3 informatique (TER - UT3) en 2021 et Mathieu Campan (stage de 1A ENSEEIHT) en 2022.
+Le code disponible **[là](./tabgo)** a principalement été développé au travers de plusieurs projets de fin d'étude : Jean-Baptiste Marco dans sa première mouture en java (stage de 2A ISAE-ENSMA) en 2018, Léa Berquez (stage de L3 Informatique - UT3) en 2020, un pool de 10 étudiants de L3 informatique (TER - UT3) en 2021 et Mathieu Campan (stage de 1A ENSEEIHT) en 2022 et {Ninon Autefage, Noémie Guiraud, Adrian Morellato et Loan Vigouroux (BE de Lience Informatique - UT3)} en 2024.  
 
 D'autres voies sont actuellement explorées pour permettre une exécution complètement non-visuelle du code.
 
@@ -42,7 +42,8 @@ Ce projet a été partiellement financé via un appel à projets de l'[UNADEV](h
 * Marco J.B., Baptiste-Jessel N., Truillet Ph., *[TaBGO : Programmation par blocs tangibles](https://hal.archives-ouvertes.fr/hal-02181953)* In: 30e Conference francophone sur l'Interaction Homme-Machine (IHM 2018), 23 October 2018 - 26 October 2018 (Brest, France)
 * Andriamahery-Ranjalahy K., Berquez L., Jessel N., Truillet Ph., *[TaBGO: towards accessible computer science in secondary school](https://hal.archives-ouvertes.fr/hal-03168307v1)*, In : 23rd International Conference on Human-Computer Interaction (HCI International 2021), Jul 2021, virtual place, United States.
 * Andriamahery-Ranjalahy K., Truillet Ph.,  *[Permettre l’autonomie dans l’activité de programmation par blocs pour des enfants non-voyants](https://hal.archives-ouvertes.fr/hal-03716993v1)*, In : 12e Conférence Handicap 2022, 8-10 Juin 2022 (Paris, France), pp. 155-160
-* Andriamahery Ranjalahy K., Campan M., Baptiste-Jessel ., Truillet Ph., *An Autonomous Approach for Bloc-Based Coding Activities Oriented Towards Visually Impaired Pupils*, **soon**
+
 
 ## Presse, informations
 * [Expérimentation au collège Lamartine / Toulouse - Juin 2021](https://lamartine.ecollege.haute-garonne.fr/le-college/projet-techno-programmation-scratch-pour-les-non-voyants-17099.htm)
+* Présentation aux [Journées d'Etudes de l'ATAF](https://transcripteur.fr/actualites/journees-detude-ataf-2024) - Association des Transcripteurs-Adaptateurs Francophones 2024, 21 juin 2024 
