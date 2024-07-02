@@ -3,7 +3,7 @@
 ## Informations générales
 Le projet TaBGO a pour objectif de permettre à des personnes non-voyantes d'utiliser le langage de programmation [Scratch](https://scratch.mit.edu) par utilisation de blocs tangibles.
 
-Le lecteur TaBGo permet la reconnaissance des blocs tangibles grâce à des [TopCodes](https://github.com/truillet/TopCodes) ainsi que des [cubarithmes](https://magasin.avh.asso.fr/tous-les-articles/145-cubes-algebriques-par-100.html?search_query=cube+braille&results=51) et créer un fichier **sb3** directement exécutable par [Scratch](https://scratch.mit.edu).
+Le lecteur TaBGo permet la reconnaissance des blocs tangibles grâce à des [TopCodes](https://github.com/truillet/TopCodes) ainsi que des [cubarithmes](https://magasin.avh.asso.fr/tous-les-articles/145-cubes-algebriques-par-100.html?search_query=cube+braille&results=51), créer un fichier **sb3** directement exécutable par [Scratch](https://scratch.mit.edu) et/ou de générer une trace accessible pour les élèves déficients visuels.
 
 <img src="./documentation/images/valise.jpg" width=400 alt="la valise de blocs">
 
@@ -11,9 +11,9 @@ Vous pouvez consulter la documentation pour construire vos blocs au format **[do
 
 Des exemples d'algorithmes sont disponibles [**ici**](https://github.com/TaBGO/lecteur/tree/main/documentation/exemples)
 
-Le code disponible **[là](./tabgo)** a principalement été développé au travers de plusieurs projets de fin d'étude : Jean-Baptiste Marco dans sa première mouture en java (stage de 2A ISAE-ENSMA) en 2018, Léa Berquez (stage de L3 Informatique - UT3) en 2020, un pool de 10 étudiants de L3 informatique (TER - UT3) en 2021 et Mathieu Campan (stage de 1A ENSEEIHT) en 2022 et {Ninon Autefage, Noémie Guiraud, Adrian Morellato et Loan Vigouroux (BE de Lience Informatique - UT3)} en 2024.  
+Le code disponible **[là](./tabgo)** a principalement été développé au travers de plusieurs projets de fin d'étude : Jean-Baptiste Marco dans sa première mouture en java (stage de 2A ISAE-ENSMA) en 2018, Léa Berquez (stage de L3 Informatique - UT3) en 2020, un pool de 10 étudiants de L3 informatique (TER - UT3) en 2021, Mathieu Campan (stage de 1A ENSEEIHT) en 2022 et {Ninon Autefage, Noémie Guiraud, Adrian Morellato et Loan Vigouroux (BE de Lience Informatique - UT3)} en 2024.  
 
-D'autres voies sont actuellement explorées pour permettre une exécution complètement non-visuelle du code.
+D'autres voies sont actuellement explorées (voir par exemple le [convertisseur sb3/svg](https://github.com/TaBGO/svg_converter)) pour permettre une exécution complètement non-visuelle du code.
 
 ## Technologies utilisées
 Le logiciel utilise [processing.org](https://www.processing.org) et les librairies *[OpenCV](./tabgo/code/opencv_processing4.52.jar)* recompilé avec la version OpenCV 4.52, *[Video](https://github.com/processing/processing-video)* (pour la reconnaissance optique),  *[drop](http://transfluxus.github.io/drop)* (pour le Drag and Drop d'images) et *[gson](https://github.com/google/gson)* (pour la création des fichiers **sb3**).
